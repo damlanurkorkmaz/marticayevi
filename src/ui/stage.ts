@@ -8,7 +8,7 @@ import { openNotebook, openTown } from './overlays';
 
 const NAME_COLORS: Partial<Record<Speaker, string>> = {
   deniz: '#1F4E6B', yusuf: '#5E6B5C', sukran: '#7B4F6A', cevdet: '#1F4E6B',
-  elif: '#B5432A', hilmi: '#4A4038', anne: '#6B4A5E', pamuk: '#8A7E74',
+  elif: '#B5432A', hilmi: '#4A4038', kemal: '#3F5A6E', anne: '#6B4A5E', pamuk: '#8A7E74',
 };
 
 export type BrewResult = 'mukemmel' | 'iyi' | 'olmadi';
@@ -56,6 +56,10 @@ export class Stage implements SceneUI {
     this.backdropEl.dataset.bg = bg;
     this.counterEl.hidden = bg !== 'cayevi';
     this.setActor(null);
+  }
+
+  enter(who: CharId) {
+    this.setActor(who);
   }
 
   setActor(who: CharId | null) {

@@ -1,4 +1,4 @@
-import type { Backdrop, GameState, Node, Speaker } from '../types';
+import type { Backdrop, CharId, GameState, Node, Speaker } from '../types';
 import { CHARACTERS } from '../data/characters';
 import { DRINKS } from '../data/drinks';
 import { addBond, addItem, hasFlag, meet, setFlag, unlockRecipe } from './state';
@@ -10,6 +10,7 @@ export interface SceneUI {
   toast(text: string): void;
   backdrop(bg: Backdrop): void;
   card(title: string, subtitle?: string): Promise<void>;
+  enter(who: CharId): void;
 }
 
 export async function runScene(nodes: Node[], s: GameState, ui: SceneUI): Promise<void> {
@@ -53,6 +54,10 @@ export async function runScene(nodes: Node[], s: GameState, ui: SceneUI): Promis
         break;
       case 'card':
         await ui.card(node.title, node.subtitle);
+        break;
+      case 'enter':
+        meet(s, node.who);
+        ui.enter(node.who);
         break;
     }
   }
