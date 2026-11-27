@@ -1,5 +1,5 @@
 import type { Day } from '../types';
-import { D, N, bg, bond, flag, say, yusufDaily } from './helpers';
+import { A, D, N, bg, bond, flag, say, yusufDaily } from './helpers';
 import { CHAPTER_2 } from './chapter2';
 import { CHAPTER_3 } from './chapter3';
 import { CHAPTER_4 } from './chapter4';
@@ -14,10 +14,12 @@ const day1: Day = {
   n: 1, chapter: 0, title: 'Kepenk', weekday: 'Pazartesi',
   morning: [
     bg('liman'),
+    A('otobus_gider'),
     N('Haziranın ilk sabahı. Otobüs seni Yalıçam iskelesinin önünde bırakıp toz bulutu içinde uzaklaşıyor.'),
     D('Babaannemin cenazesinden beri ilk kez buradayım. Bir yaz. Sadece bir yaz kalıp dükkânı satacağım.'),
     N('İskelenin ucunda, kepengi paslanmış küçük bir dükkân. Tabelasındaki harflerin yarısı dökülmüş: “M RTI ÇAY EV”.'),
     bg('cayevi'),
+    A('kepenk_ac'),
     N('Kepenk gıcırdayarak açılıyor. İçeride toz, deniz kokusu ve bir de… taze çay kokusu? Olamaz.'),
     D('Biri burayı benden önce açmış olabilir mi?'),
     N('Tezgâhın altında, bir bez parçasına sarılı kalın bir defter buluyorsun. Kapağında babaannenin el yazısı: “Nesrin’in defteri”.'),
@@ -70,6 +72,7 @@ const day1: Day = {
   night: [
     bg('gece'),
     N('Gece yarısı. Dükkânın üstündeki küçük odada uyuyamıyorsun.'),
+    A('fener_yanar'),
     N('Birden pencereden içeri sarı bir ışık vuruyor. Bir… iki… üç kez dönüp geçiyor.'),
     {
       t: 'choice',
@@ -86,6 +89,7 @@ const day2: Day = {
   n: 2, chapter: 0, title: 'Pencere kenarı', weekday: 'Salı',
   morning: [
     bg('cayevi'),
+    A('kepenk_ac'),
     N('Sabah 07.30. Kepengi kaldırdığında kapının önünde biri bekliyor.'),
     N('Yaşlı bir adam. Başında eski bir kasket, üstünde el örgüsü bir yelek. Seni görünce hiçbir şey söylemeden içeri giriyor ve pencere kenarındaki masaya oturuyor.'),
     N('Masada bir tavla duruyor. Adam pulları tek tek diziyor. Kimseyi beklemeden, tek başına oynamaya başlıyor.'),

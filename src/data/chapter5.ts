@@ -1,5 +1,5 @@
 import type { Day } from '../types';
-import { D, N, bg, bond, flag, say } from './helpers';
+import { A, D, N, bg, bond, flag, say } from './helpers';
 
 // ---------------------------------------------------------------------------
 // BÖLÜM 5 — "Fırtına Gecesi"
@@ -113,6 +113,7 @@ const day26: Day = {
       t: 'if', flag: 'anne_geliyor',
       then: [
         bg('liman'),
+        A('otobus_gelir'),
         N('Akşam otobüsü iskelenin önünde duruyor. İnen tek yolcu: elinde küçük bir bavul, saçında bir tutam beyaz.'),
         say('anne', 'Burası… hiç değişmemiş. Hiç gelmedim ama bütün fotoğraflardan biliyorum.'),
         bg('cayevi'),
@@ -173,6 +174,7 @@ const day27: Day = {
     N('Saat yedi. Cevdet beşte iskeleden çıktı. Karanfilleri bırakıp dönecekti. Dönmedi.'),
     N('Tezgâhın üstünde Rıza Kaptan’ın telsizi cızırdıyor. Sonra bir ses. Elli yıl önceki sesin aynısı.'),
     say('anlatici', 'Cevdet’in sesi: “Yıldız II’den kıyıya… Motor durdu. Sürükleniyorum. Kayalık nerede göremiyorum. Hiçbir şey göremiyorum.”'),
+    A('elektrik_kesik'),
     N('O anda bütün kasabanın ışıkları sönüyor. Elektrik kesildi. Pencereden bakıyorsun: fener de karanlık.'),
     say('sukran', 'Aynı gece. Aynı gece, Allah’ım.'),
     {
@@ -197,6 +199,7 @@ const day27: Day = {
   ],
   night: [
     bg('firtina'),
+    A('simsek'),
     N('Fenerin merdivenleri yüz on iki basamak. Rüzgâr kapıyı yüzüne çarpıyor. Yukarıda, lamba odasında Yusuf Amca.'),
     N('Elektrik yok. Lamba sönük. Yusuf Amca duvardaki demir kolu çeviriyor. Kol ağır. Dizi titriyor. Kol ancak yarım tur dönüyor.'),
     say('yusuf', 'Gaz lambası yandı. Ama mercek dönmeden ışık kayalığa ulaşmaz. Kolu çevirmemiz lazım. Yalnız çeviremiyorum.'),
@@ -212,6 +215,7 @@ const day27: Day = {
         N('Dişliler gıcırdıyor, sonra birden boşalıyor. Mercek dönmeye başlıyor.'),
       ],
     },
+    A('fener_yanar'),
     N('Işık lamba odasından taşıyor. Fırtınanın içinden, koyun üzerinden geçiyor. Bir. İki. Üç.'),
     say('anlatici', 'El telsizinden Elif’in sesi: “Görüyor! Cevdet Abi ışığı görüyor! Kayalığın yerini görüyor!”'),
     say('yusuf', 'Gölgeye girmesin. Işık döndükçe kayalığın gölgesi görünür. Söyle ona: gölgeden uzak dursun.'),
@@ -261,6 +265,7 @@ const day28: Day = {
       t: 'if', flag: 'anne_tanisti',
       then: [],
       else: [
+        A('otobus_gelir'),
         N('İlk sabah otobüsünden annen iniyor. Seni görünce bavulunu bırakıp koşuyor.'),
         say('anne', 'Haberleri izledim, bütün gece uyumadım. İyi misin? Çok şükür.'),
         N('Arkandan biri yaklaşıyor. Kasketi elinde. Annen onu görünce duraksıyor.'),
@@ -329,6 +334,8 @@ const day28: Day = {
                 N('Çay evi uzun süre susuyor. Sonra Hilmi kalkıyor, cebinden paslı bir anahtar çıkarıyor.'),
                 say('hilmi', 'Bekçi evinin anahtarı. Köy adına. Yusuf Usta, fenerin bekçisi sensin. Hep sendin.'),
                 N('O gece bütün kasaba fenere yürüyor. Kolu sırayla çeviriyorlar. Yusuf, Cevdet, Kemal, Hilmi, Elif, annen, sen.'),
+                bg('gece'),
+                A('fener_yanar'),
                 N('Işık koyun üstünden geçiyor ve kıyıdaki eski yazlık sinemanın soluk tabelasını aydınlatıyor. Elif fısıldıyor: “Orası da ne?”'),
                 flag('son_fener'),
                 { t: 'card', title: 'Son: Fener Yanıyor', subtitle: 'Martı Çay Evi açık kalıyor' },
@@ -360,8 +367,14 @@ const day28: Day = {
           text: 'Hiçbir şey söyleme, çay evini sat',
           then: [
             N('Anmada hiçbir şey söylemiyorsun. Ertesi hafta İstanbul’dan bir emlakçı geliyor. İmzalar atılıyor.'),
+            A('kepenk_kapa'),
             N('Son gün kepengi kendi elinle indiriyorsun. Pamuk’u bir kutuya koyuyorsun. Tarif defterini Yusuf Amca’nın masasına bırakıyorsun.'),
-            N('Otobüs kasabadan çıkarken arka camdan bakıyorsun. Fener bir kez yanıyor. Sonra sönüyor.'),
+            bg('liman'),
+            A('otobus_gider'),
+            N('Otobüs kasabadan çıkarken arka camdan bakıyorsun.'),
+            bg('gece'),
+            A('fener_yanar'),
+            N('Fener bir kez yanıyor. Sonra sönüyor.'),
             flag('son_kepenk'),
             { t: 'card', title: 'Son: Kepenk', subtitle: 'Bazı kapılar kapanınca da açık kalır' },
           ],

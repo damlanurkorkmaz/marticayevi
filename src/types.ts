@@ -4,6 +4,9 @@
 export type CharId = 'deniz' | 'yusuf' | 'sukran' | 'cevdet' | 'elif' | 'hilmi' | 'kemal' | 'anne' | 'pamuk';
 export type Speaker = CharId | 'anlatici';
 export type DrinkId = 'tavsan' | 'adacayi' | 'kahve' | 'limonata' | 'ihlamur' | 'harman';
+/** Short staged moments drawn over the backdrop. */
+export type AnimName = 'kepenk_ac' | 'kepenk_kapa' | 'otobus_gelir' | 'otobus_gider' | 'fener_yanar' | 'simsek' | 'elektrik_kesik' | 'telefon';
+
 export type Backdrop = 'liman' | 'cayevi' | 'gece' | 'fener' | 'depo' | 'telefon' | 'tekne' | 'firtina';
 
 /** A single step in a scripted scene. Scenes are arrays of nodes run in order. */
@@ -21,7 +24,8 @@ export type Node =
   | { t: 'backdrop'; bg: Backdrop }
   | { t: 'card'; title: string; subtitle?: string }
   /** Brings a character on screen. A visit containing one starts with an empty counter. */
-  | { t: 'enter'; who: CharId };
+  | { t: 'enter'; who: CharId }
+  | { t: 'anim'; name: AnimName };
 
 export interface ChoiceOption {
   text: string;
@@ -81,6 +85,8 @@ export interface Character {
   drink: string;
   portrait?: string;
   cut?: string;
+  /** Same as `cut` with the mouth open; alternated with it while the character talks. */
+  talk?: string;
   /** Characters hidden from the town book until they are met. */
   hiddenUntilMet?: boolean;
 }

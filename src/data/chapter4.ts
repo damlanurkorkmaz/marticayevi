@@ -1,5 +1,5 @@
 import type { Day } from '../types';
-import { D, N, bg, bond, flag, say, yusufDaily } from './helpers';
+import { A, D, N, bg, bond, flag, say, yusufDaily } from './helpers';
 
 // ---------------------------------------------------------------------------
 // BÖLÜM 4 — "Ebe"
@@ -456,6 +456,7 @@ const day24: Day = {
         },
       ],
     },
+    A('simsek'),
     N('Fenerin camında ilk şimşek yansıyor. Uzaklarda, çok uzaklarda.'),
   ],
   chapterEnd: {

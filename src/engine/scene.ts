@@ -1,4 +1,4 @@
-import type { Backdrop, CharId, GameState, Node, Speaker } from '../types';
+import type { AnimName, Backdrop, CharId, DrinkId, GameState, Node, Speaker } from '../types';
 import { CHARACTERS } from '../data/characters';
 import { DRINKS } from '../data/drinks';
 import { addBond, addItem, hasFlag, meet, setFlag, unlockRecipe } from './state';
@@ -11,7 +11,13 @@ export interface SceneUI {
   backdrop(bg: Backdrop): void;
   card(title: string, subtitle?: string): Promise<void>;
   enter(who: CharId): void;
+  /** A short staged moment over the backdrop (shutter, bus, lighthouse…). */
+  anim(name: AnimName): Promise<void>;
+  /** Shows a found item or a new recipe big, so the player notices it. */
+  reveal(r: Reveal): Promise<void>;
 }
+
+export type Reveal = { kind: 'item'; id: string; name: string } | { kind: 'recipe'; id: DrinkId; name: string };
 
 export async function runScene(nodes: Node[], s: GameState, ui: SceneUI): Promise<void> {
   for (const node of nodes) {
@@ -41,10 +47,10 @@ export async function runScene(nodes: Node[], s: GameState, ui: SceneUI): Promis
         ui.toast(node.n >= 0 ? `+₺${node.n}` : `−₺${-node.n}`);
         break;
       case 'recipe':
-        if (unlockRecipe(s, node.id)) ui.toast(`Deftere yeni tarif: ${DRINKS[node.id].name}`);
+        if (unlockRecipe(s, node.id)) await ui.reveal({ kind: 'recipe', id: node.id, name: DRINKS[node.id].name });
         break;
       case 'item':
-        if (addItem(s, node.id, node.name)) ui.toast(`Yeni eşya: ${node.name}`);
+        if (addItem(s, node.id, node.name)) await ui.reveal({ kind: 'item', id: node.id, name: node.name });
         break;
       case 'if':
         await runScene(hasFlag(s, node.flag) ? node.then : node.else ?? [], s, ui);
@@ -56,6 +62,11 @@ export async function runScene(nodes: Node[], s: GameState, ui: SceneUI): Promis
       }
       case 'backdrop':
         ui.backdrop(node.bg);
+        // Every phone call starts with the phone ringing.
+        if (node.bg === 'telefon') await ui.anim('telefon');
+        break;
+      case 'anim':
+        await ui.anim(node.name);
         break;
       case 'card':
         await ui.card(node.title, node.subtitle);

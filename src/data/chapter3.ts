@@ -1,5 +1,5 @@
 import type { Day } from '../types';
-import { D, N, bg, bond, flag, say, yusufDaily } from './helpers';
+import { A, D, N, bg, bond, flag, say, yusufDaily } from './helpers';
 
 // ---------------------------------------------------------------------------
 // BÖLÜM 3 — "Yıldız'ın Hikâyesi"
@@ -76,6 +76,7 @@ const day13: Day = {
   ],
   night: [
     bg('gece'),
+    A('fener_yanar'),
     N('Gece yarısı. Fener yine yanıyor. Bu sefer pencereden izlemekle yetinmek istemiyorsun.'),
     {
       t: 'choice',
@@ -378,6 +379,7 @@ const day18: Day = {
   n: 18, chapter: 3, title: 'Yusuf', weekday: 'Perşembe',
   morning: [
     bg('cayevi'),
+    A('kepenk_ac'),
     N('Yağmurlu bir sabah. Yaz boyunca ilk yağmur. Kepengi kaldırdığında Sessiz Amca kapının önünde, ıslanmış bekliyor.'),
     N('İçeri girip pencere kenarına oturuyor. Tavlayı açıyor. Karşısındaki sandalyeyi ayağıyla hafifçe ileri itiyor.'),
   ],
@@ -463,6 +465,7 @@ const day18: Day = {
   ],
   night: [
     bg('gece'),
+    A('fener_yanar'),
     N('Gece fener yine yanıyor. Bu sefer pencereden izlerken içinde korku yok.'),
     D('Artık kimin yaktığını biliyorum. Ama nedenini bilmiyorum.'),
   ],

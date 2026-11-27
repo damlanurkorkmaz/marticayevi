@@ -1,8 +1,9 @@
-import type { Backdrop, CharId, DrinkId, GameState, Speaker } from '../types';
-import type { SceneUI } from '../engine/scene';
+import type { AnimName, Backdrop, CharId, DrinkId, GameState, Speaker } from '../types';
+import type { Reveal, SceneUI } from '../engine/scene';
 import { CHARACTERS } from '../data/characters';
 import { DRINKS, DRINK_ORDER } from '../data/drinks';
 import { BACKDROPS, COUNTER, PAMUK } from './art';
+import { BUS, DUST, PHONE, ROAD, SHUTTER, glassArt, itemArt } from './props';
 import { el, nextTap, prefersReducedMotion, wait } from './dom';
 import { openNotebook, openTown } from './overlays';
 
@@ -11,20 +12,72 @@ const NAME_COLORS: Partial<Record<Speaker, string>> = {
   elif: '#B5432A', hilmi: '#4A4038', kemal: '#3F5A6E', anne: '#6B4A5E', pamuk: '#8A7E74',
 };
 
+const VOWELS = /[aeıioöuüâîûAEIİOÖUÜ]/;
+
 export type BrewResult = 'mukemmel' | 'iyi' | 'olmadi';
 
-/** The in-game screen: HUD, backdrop with an actor, and a bottom panel for dialogue and choices. */
+/** One character on stage: an image that can flap its mouth while talking. */
+class Actor {
+  readonly el: HTMLElement;
+  private img: HTMLImageElement | null = null;
+  private closed = '';
+  private open = '';
+
+  constructor(cls: string) {
+    this.el = el('div', { class: `actor ${cls}` });
+  }
+
+  show(who: CharId) {
+    this.el.replaceChildren();
+    this.el.classList.remove('in', 'talking', 'quiet');
+    this.img = null;
+    if (who === 'pamuk') {
+      this.el.append(el('div', { class: 'actor-art pamuk', html: PAMUK }));
+    } else {
+      const c = CHARACTERS[who];
+      if (!c.cut) return;
+      this.closed = c.cut;
+      this.open = c.talk ?? c.cut;
+      new Image().src = this.open; // preload so the first flap does not flicker
+      this.img = el('img', { class: 'actor-art', src: c.cut, alt: c.name });
+      this.el.append(this.img);
+    }
+    requestAnimationFrame(() => requestAnimationFrame(() => this.el.classList.add('in')));
+  }
+
+  hide() {
+    this.el.classList.remove('in', 'talking', 'quiet');
+    this.el.replaceChildren();
+    this.img = null;
+  }
+
+  mouth(open: boolean) {
+    if (this.img) this.img.src = open ? this.open : this.closed;
+  }
+
+  state(s: 'talking' | 'quiet' | 'idle') {
+    this.el.classList.toggle('talking', s === 'talking');
+    this.el.classList.toggle('quiet', s === 'quiet');
+    if (s !== 'talking') this.mouth(false);
+  }
+}
+
+/** The in-game screen: HUD, backdrop with actors, and a bottom panel for dialogue and choices. */
 export class Stage implements SceneUI {
   readonly root: HTMLElement;
   private hudDay = el('span', { class: 'hud-day' });
   private hudMoney = el('span', { class: 'hud-money' });
+  private stageEl: HTMLElement;
   private backdropEl = el('div', { class: 'backdrop' });
-  private actorEl = el('div', { class: 'actor' });
+  private other = new Actor('other');
+  private self = new Actor('self');
   private counterEl = el('div', { class: 'counter', html: COUNTER });
+  private fxEl = el('div', { class: 'fx', 'aria-hidden': 'true' });
   private panel = el('div', { class: 'panel' });
   private toasts = el('div', { class: 'toasts', role: 'status' });
   private overlay = el('div', { class: 'overlay-host' });
   private actor: CharId | null = null;
+  private selfOn = false;
 
   constructor(private state: GameState, onMenu: () => void) {
     const btn = (label: string, icon: string, fn: () => void) =>
@@ -38,10 +91,10 @@ export class Stage implements SceneUI {
         btn('Ana menü', ICON_MENU, onMenu),
       ),
     );
-    const stage = el('div', { class: 'stage' }, this.backdropEl, this.actorEl, this.counterEl);
+    this.stageEl = el('div', { class: 'stage' }, this.backdropEl, this.other.el, this.self.el, this.counterEl, this.fxEl);
     // Tapping the picture advances dialogue too, not just the text box.
-    stage.addEventListener('click', () => (this.panel.querySelector('.dialogue') as HTMLElement | null)?.click());
-    this.root = el('div', { class: 'screen game' }, hud, stage, this.panel, this.toasts, this.overlay);
+    this.stageEl.addEventListener('click', () => (this.panel.querySelector('.dialogue') as HTMLElement | null)?.click());
+    this.root = el('div', { class: 'screen game' }, hud, this.stageEl, this.panel, this.toasts, this.overlay);
     this.counterEl.hidden = true;
     this.refreshHud();
   }
@@ -55,7 +108,9 @@ export class Stage implements SceneUI {
     this.backdropEl.innerHTML = BACKDROPS[bg];
     this.backdropEl.dataset.bg = bg;
     this.counterEl.hidden = bg !== 'cayevi';
+    this.fxEl.replaceChildren();
     this.setActor(null);
+    this.setSelf(false);
   }
 
   enter(who: CharId) {
@@ -65,45 +120,58 @@ export class Stage implements SceneUI {
   setActor(who: CharId | null) {
     if (who === this.actor) return;
     this.actor = who;
-    this.actorEl.replaceChildren();
-    this.actorEl.classList.remove('in');
-    if (!who) return;
-    if (who === 'pamuk') {
-      this.actorEl.append(el('div', { class: 'actor-art pamuk', html: PAMUK }));
-    } else {
-      const src = CHARACTERS[who].cut;
-      if (!src) return;
-      this.actorEl.append(el('img', { class: 'actor-art', src, alt: CHARACTERS[who].name }));
-    }
-    requestAnimationFrame(() => this.actorEl.classList.add('in'));
+    if (who) this.other.show(who);
+    else this.other.hide();
+    this.layout();
+  }
+
+  private setSelf(on: boolean) {
+    if (on === this.selfOn) return;
+    this.selfOn = on;
+    if (on) this.self.show('deniz');
+    else this.self.hide();
+    this.layout();
+  }
+
+  private layout() {
+    this.stageEl.classList.toggle('paired', this.selfOn && this.actor !== null);
   }
 
   async say(who: Speaker, text: string): Promise<void> {
     const onPhone = who === 'anne' && this.backdropEl.dataset.bg === 'telefon';
-    if (who !== 'anlatici' && who !== 'deniz' && !onPhone) this.setActor(who);
+    if (who === 'deniz') this.setSelf(true);
+    else if (who !== 'anlatici' && !onPhone) this.setActor(who);
+
+    const speaker = who === 'deniz' ? this.self : who === 'anlatici' || onPhone ? null : this.other;
+    for (const a of [this.self, this.other]) a.state(speaker === null ? 'idle' : a === speaker ? 'talking' : 'quiet');
+
     const isNarr = who === 'anlatici';
-    const name = isNarr ? null : CHARACTERS[who].name;
+    // Deniz is on stage when she talks, so her line needs no name card.
+    const name = isNarr || who === 'deniz' ? null : CHARACTERS[who].name;
     const textEl = el('p', { class: 'line-text' });
     const box = el('div', { class: `dialogue${isNarr ? ' narr' : ''}${who === 'deniz' ? ' self' : ''}`, tabindex: '0' },
-      name ? el('div', { class: 'nametag', style: `background:${NAME_COLORS[who] ?? '#2B2622'}` },
-        who === 'deniz' ? el('img', { src: CHARACTERS.deniz.portrait!, alt: '' }) : null, name) : null,
+      name ? el('div', { class: 'nametag', style: `background:${NAME_COLORS[who] ?? '#2B2622'}` }, name) : null,
       textEl,
       el('span', { class: 'more', 'aria-hidden': 'true' }, '▾'),
     );
     this.panel.replaceChildren(box);
     box.focus({ preventScroll: true });
 
-    // Typewriter; a tap finishes the line, the next tap advances.
+    // Typewriter; a tap finishes the line, the next tap advances. The mouth opens on vowels.
     let skip = false;
     const skipper = () => { skip = true; };
     box.addEventListener('click', skipper, { once: true });
     if (prefersReducedMotion()) skip = true;
     for (let i = 1; i <= text.length && !skip; i++) {
+      const ch = text[i - 1];
       textEl.textContent = text.slice(0, i);
-      await wait(text[i - 1] === '.' || text[i - 1] === '?' ? 120 : 22);
+      speaker?.mouth(VOWELS.test(ch));
+      await wait(ch === '.' || ch === '?' || ch === '!' ? 120 : 24);
     }
     box.removeEventListener('click', skipper);
     textEl.textContent = text;
+    speaker?.mouth(false);
+    speaker?.state('idle');
     box.classList.add('done');
     await nextTap(box);
   }
@@ -139,6 +207,54 @@ export class Stage implements SceneUI {
     await nextTap(c);
     c.classList.add('out');
     await wait(250);
+    c.remove();
+  }
+
+  /** Staged moments over the backdrop. A tap on the picture skips the wait. */
+  async anim(name: AnimName): Promise<void> {
+    const reduced = prefersReducedMotion();
+    this.panel.replaceChildren(); // no stale line under a staged moment
+    const added: HTMLElement[] = [];
+    const add = (cls: string, html = '') => {
+      const node = el('div', { class: `fx-${cls}`, html });
+      this.fxEl.append(node);
+      added.push(node);
+    };
+    let ms = 1800;
+    let keep = false;
+    switch (name) {
+      case 'kepenk_ac': add('shutter up', SHUTTER); ms = 1900; break;
+      case 'kepenk_kapa': add('shutter down', SHUTTER); ms = 1700; keep = true; break;
+      case 'otobus_gelir': add('road', ROAD); add('bus arrive', BUS + `<div class="fx-dust">${DUST}</div>`); ms = 2200; keep = true; break;
+      case 'otobus_gider': add('road', ROAD); add('bus leave', BUS + `<div class="fx-dust">${DUST}</div>`); ms = 2600; break;
+      case 'fener_yanar': add('beam'); add('glow'); ms = 2700; break;
+      case 'simsek': add('flash'); ms = 1000; break;
+      case 'elektrik_kesik': add('dark'); ms = 1100; keep = true; break;
+      case 'telefon': add('phone', PHONE); ms = 1900; break;
+    }
+    this.fxEl.classList.toggle('reduced', reduced);
+    await Promise.race([wait(reduced ? 350 : ms), nextTap(this.stageEl)]);
+    if (!keep) added.forEach((n) => n.remove());
+  }
+
+  /** Big card for a found item or a new recipe, so it cannot be missed. */
+  async reveal(r: Reveal): Promise<void> {
+    const art = r.kind === 'recipe' ? glassArt(r.id) : itemArt(r.id);
+    const c = el('div', { class: 'reveal', tabindex: '0', role: 'dialog', 'aria-label': r.name },
+      el('div', { class: 'reveal-card' },
+        el('div', { class: 'reveal-rays', 'aria-hidden': 'true' }),
+        el('div', { class: 'reveal-art', html: art }),
+        el('span', { class: 'kicker' }, r.kind === 'recipe' ? 'DEFTERE YENİ TARİF' : 'YENİ EŞYA'),
+        el('h2', {}, r.name),
+        el('span', { class: 'tap-hint' }, r.kind === 'recipe' ? 'Defterde, tarifler arasında' : 'Defterin “Ceplerinde” sayfasında'),
+      ),
+    );
+    this.overlay.append(c);
+    c.focus();
+    await wait(prefersReducedMotion() ? 100 : 650);
+    await nextTap(c);
+    c.classList.add('out');
+    await wait(220);
     c.remove();
   }
 

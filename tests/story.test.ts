@@ -6,6 +6,7 @@ import { DRINKS, RECIPES } from '../src/data/drinks';
 import { runScene, type SceneUI } from '../src/engine/scene';
 import { newGame, save, load, addBond, MAX_BOND } from '../src/engine/state';
 import { payFor } from '../src/game';
+import { ITEM_IDS } from '../src/ui/props';
 
 function* walk(nodes: Node[]): Generator<Node> {
   for (const n of nodes) {
@@ -35,6 +36,8 @@ function fakeUI(pick = 0): SceneUI & { lines: string[] } {
     backdrop: () => {},
     card: async () => {},
     enter: () => {},
+    anim: async () => {},
+    reveal: async () => {},
   };
 }
 
@@ -68,6 +71,10 @@ describe('story data', () => {
         for (const n of [...walk(v.arrive), ...walk(v.right), ...walk(v.wrong), ...walk(v.after ?? [])]) if (n.t === 'recipe') known.add(n.id);
       }
     }
+  });
+
+  it('has a picture for every item the story hands out', () => {
+    for (const n of allNodes()) if (n.t === 'item') expect(ITEM_IDS, n.id).toContain(n.id);
   });
 
   it('has a recipe page for every drink', () => {

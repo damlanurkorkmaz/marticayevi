@@ -1,5 +1,5 @@
 import type { Day } from '../types';
-import { D, N, bg, bond, flag, say, yusufDaily } from './helpers';
+import { A, D, N, bg, bond, flag, say, yusufDaily } from './helpers';
 
 // ---------------------------------------------------------------------------
 // BÖLÜM 2 — "Muhtarın Planı"
@@ -14,6 +14,7 @@ const day7: Day = {
   morning: [
     bg('cayevi'),
     N('Pazar sabahı. Elif’in gece gönderdiği video aklından çıkmıyor. Kasketli biri, elinde anahtar.'),
+    A('kepenk_ac'),
     N('Kepengi kaldırdığında iskele başında siyah, İzmir plakalı bir araba duruyor. Camları koyu.'),
   ],
   visits: [
@@ -353,6 +354,7 @@ const day10: Day = {
     N('Gece yarısı Elif arıyor. Fısıltıyla konuşuyor.'),
     say('elif', 'Muhtarın evinin karşısındayım. Evde. Işıklar kapalı, arabası kapıda, horlaması sokaktan duyuluyor.'),
     say('elif', 'Bu gece fener yanarsa…'),
+    A('fener_yanar'),
     N('Cümlesini bitiremeden pencereden sarı bir ışık vuruyor. Bir. İki. Üç.'),
     D('Fener yanıyor. Hilmi evde uyurken.'),
     say('elif', 'O zaman kim?!'),
@@ -511,6 +513,7 @@ const day12: Day = {
     say('cevdet', 'Peki ya fener, muhtar? Onu da sen mi yakıyordun? Babamın mezarı gibi duran o feneri?'),
     say('hilmi', 'Ben mi? Ben o kapıyı sadece otelciye gösterdim. Fener yandığı gece ben evimde uyuyordum.'),
     say('elif', 'Doğru! Kanıtım var. Bütün gece evinin karşısındaydım.'),
+    A('fener_yanar'),
     N('Tam o anda pencereden sarı bir ışık vuruyor. Bütün başlar aynı anda dönüyor.'),
     N('Fener yanıyor. Bütün kasaba buradayken.'),
     D('Burada olmayan tek kişi…'),
