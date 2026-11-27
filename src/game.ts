@@ -52,6 +52,7 @@ async function playDay(day: Day, s: GameState, stage: Stage): Promise<void> {
   if (day.night) await runScene(day.night, s, stage);
 
   stage.setActor(null);
+  stage.hide();
   await stage.sheet(daySummary(day, s, start), day.n === LAST_DAY ? 'Devam' : 'Günü bitir');
 
   if (day.chapterEnd) {
@@ -73,6 +74,7 @@ async function serve(v: Visit, s: GameState, stage: Stage): Promise<void> {
 
   const drink = await stage.pickDrink();
   const q = await stage.brew(drink);
+  stage.serveDrink(drink);
   const correct = drink === v.wants;
   const pay = payFor(DRINKS[drink].price, correct, q);
   s.money += pay;

@@ -1,5 +1,5 @@
 import type { Day } from '../types';
-import { A, D, N, bg, bond, flag, say, yusufDaily } from './helpers';
+import { A, bg, bond, D, flag, hide, N, say, show, yusufDaily } from './helpers';
 
 // ---------------------------------------------------------------------------
 // BÖLÜM 2 — "Muhtarın Planı"
@@ -39,14 +39,19 @@ const day7: Day = {
     {
       who: 'hilmi',
       arrive: [
-        N('Muhtar Hilmi içeri giriyor. Yanında saçları jöleli, genç, takım elbiseli bir adam.'),
-        say('hilmi', 'Tuncer Bey, Liman Otelcilik’ten. İzmir’den bizim için geldi! Bana o ballı şeyden ver, doktor kahveyi yasakladı ya.'),
+        { t: 'enter', who: 'tuncer' },
+        N('İçeri saçları jöleli, genç, takım elbiseli bir adam giriyor. Parlak ayakkabılarıyla çay evinin tahta zeminine bakıyor.'),
+        say('tuncer', 'Tuncer. Liman Otelcilik, İzmir. Manzaranız gerçekten milyon dolar, biliyor musunuz?'),
+        say('hilmi', 'Tuncer Bey bizim için İzmir’den geldi! Bana o ballı şeyden ver, doktor kahveyi yasakladı ya.'),
       ],
       wants: 'adacayi',
       right: [say('hilmi', 'Bak Tuncer Bey, bu kasabanın tadı bu işte!'), bond('hilmi')],
       wrong: [say('hilmi', 'Ballı olan demiştim ama… Neyse, misafirin yanında olmaz.')],
       after: [
+        say('tuncer', 'Lafı uzatmayalım. Şirketimizin teklifi.'),
+        show('zarf'),
         N('Tuncer Bey bir zarf uzatıyor. İçinde bir rakam. Okuyunca bir an nefesin kesiliyor.'),
+        hide,
         say('hilmi', 'Peşin. Bu parayla İstanbul’da istediğin yerde dükkân açarsın. Düşün, taşın.'),
         {
           t: 'choice', prompt: 'Ne diyeceksin?',
@@ -64,6 +69,7 @@ const day7: Day = {
               then: [
                 N('Hilmi’nin gülümsemesi yüzünde donup kalıyor.'),
                 say('hilmi', 'Kilit mi? Ne kilidi? Ha… o. Belediye işleri. Güvenlik. Çocuklar çıkıp düşmesin diye.'),
+                say('tuncer', 'Hilmi Bey, bir sonraki toplantıya geç kalıyoruz.'),
                 N('Tuncer Bey saatine bakıyor. Hilmi kalkmak için acele ediyor.'),
                 bond('hilmi', -1),
                 flag('hilmi_kilit_soruldu'),
@@ -113,9 +119,11 @@ const day8: Day = {
   morning: [
     bg('depo'),
     N('Daha kepengi açmadan Elif seni kolundan çekip deponun arka duvarına götürüyor.'),
+    show('kanit_duvari'),
     N('Duvar fotoğraflarla, gazete kupürleriyle, kırmızı iplerle kaplanmış. Ortada muhtarın bir fotoğrafı. Etrafında kocaman soru işaretleri.'),
     say('elif', 'Kanıt duvarı! Babaannenin deposu en iyi karargâh. Pamuk da onayladı.'),
     say('pamuk', 'Mrrr.'),
+    hide,
     {
       t: 'if', flag: 'foto',
       then: [
@@ -184,7 +192,7 @@ const day8: Day = {
             bg('fener'),
             N('Kayaların arkasına çömeliyorsunuz. Fenerin kapısında iki el feneri. Muhtar ve Tuncer Bey.'),
             N('Hilmi cebinden bir anahtar çıkarıyor ve yeni asma kilidi açıyor. Kapıyı itiyor.'),
-            N('İçeriden Tuncer Bey’in sesi geliyor: “Bekçi evini yıkarız. Buraya resepsiyon, şuraya teras. Manzara milyon dolar.”'),
+            say('tuncer', 'Bekçi evini yıkarız. Buraya resepsiyon, şuraya teras. Manzara milyon dolar, Hilmi Bey.'),
             N('Birkaç dakika sonra çıkıyorlar. Hilmi kilidi kapatıyor. Fener karanlık kalıyor.'),
             say('elif', 'Anahtar onda! Gördün mü? Kanıt!'),
             D('Gördüm. Ama fener yanmadı.'),
@@ -402,8 +410,10 @@ const day11: Day = {
           else: [D('Kemal Usta, fenerin kilidini siz satmışsınız. Muhtarda bir anahtar var. Başka var mı?')],
         },
         N('Kemal gözlüğünü alnından indiriyor. Uzun uzun bardağına bakıyor.'),
+        show('sabun'),
         say('kemal', 'Muhtar kilidi taktığının ertesi sabahı biri geldi dükkâna. Elinde bir sabun parçası. Kilidin anahtar deliğinin izi üstünde.'),
         say('kemal', 'Kopya istedi. Yaptım.'),
+        hide,
         D('Kim?'),
         say('kemal', 'Söz verdim, söyleyemem. Ama şunu bil: elli yıl o kapının anahtarı onun cebindeydi.'),
         say('kemal', 'Bir pirinç kilit yüzünden elinden alınmasına gönlüm razı olmadı.'),
@@ -468,6 +478,7 @@ const day12: Day = {
   ],
   evening: [
     bg('cayevi'),
+    show('kalabalik'),
     N('Akşam. Çay evi ağzına kadar dolu. Kapının önünde ayakta duranlar bile var. Tuncer Bey en arkada, telefonuyla oynuyor.'),
     N('Muhtar Hilmi ayağa kalkıyor. Boğazını temizliyor.'),
     {
@@ -509,6 +520,7 @@ const day12: Day = {
         },
       ],
     },
+    say('tuncer', 'Bu kasabada iş yapılmıyor. Hepinize iyi akşamlar.'),
     N('Tuncer Bey kapıyı çarpıp çıkıyor. Arabası tozu dumana katarak uzaklaşıyor.'),
     say('cevdet', 'Peki ya fener, muhtar? Onu da sen mi yakıyordun? Babamın mezarı gibi duran o feneri?'),
     say('hilmi', 'Ben mi? Ben o kapıyı sadece otelciye gösterdim. Fener yandığı gece ben evimde uyuyordum.'),
@@ -518,6 +530,7 @@ const day12: Day = {
     N('Fener yanıyor. Bütün kasaba buradayken.'),
     D('Burada olmayan tek kişi…'),
     N('Pencere kenarındaki masaya bakıyorsun. Tavla kapalı. Sandalye boş.'),
+    show('kirik_bardak'),
     N('Şükran Hala’nın elindeki bardak yere düşüp kırılıyor.'),
     { t: 'card', title: 'Fener yandı', subtitle: 'Bütün kasaba çay evindeyken' },
   ],

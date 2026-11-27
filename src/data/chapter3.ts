@@ -1,5 +1,5 @@
 import type { Day } from '../types';
-import { A, D, N, bg, bond, flag, say, yusufDaily } from './helpers';
+import { A, bg, bond, D, flag, hide, N, say, show, yusufDaily } from './helpers';
 
 // ---------------------------------------------------------------------------
 // BÖLÜM 3 — "Yıldız'ın Hikâyesi"
@@ -14,7 +14,9 @@ const day13: Day = {
   morning: [
     bg('cayevi'),
     N('Toplantının ertesi sabahı. Saat sekiz, dokuz, on. Pencere kenarındaki sandalye boş.'),
+    show('tavla'),
     N('Tavla dün geceden beri masada duruyor. Kapalı. Kimse dokunmuyor. Kasabalılar ona bakıp fısıldaşıyor.'),
+    hide,
     say('elif', 'Kasketli. Topal. Elli yıldır anahtarı cebinde. Ve dün gece bütün kasabada bir tek o yoktu.'),
     {
       t: 'choice', prompt: 'Elif’e ne diyeceksin?',
@@ -105,10 +107,12 @@ const day14: Day = {
   n: 14, chapter: 3, title: 'Babamın Telsizi', weekday: 'Pazar',
   morning: [
     bg('cayevi'),
+    show('telsiz'),
     N('Pazar sabahı Cevdet elinde eski, paslı bir telsizle geliyor. Ağır, gri, kulpları kırık.'),
     say('cevdet', 'Babamın. Kemal Usta pazar dükkân açmaz. Burada bakacakmış. Masanı kullanıyoruz, kusura bakma.'),
     N('Telsizin yan tarafında küçük bir kaset kapağı var. İçinde elli yıllık bir kaset sıkışmış.'),
     say('cevdet', 'Babam bütün telsiz konuşmalarını kasete kaydederdi. Sigortacılar için. Bu kaset o geceden kalma olmalı.'),
+    hide,
     flag('kaset_var'),
   ],
   visits: [
@@ -215,10 +219,12 @@ const day15: Day = {
   evening: [
     bg('cayevi'),
     N('Kepenk yarıya kadar inik. Çay evinde sadece sen, Cevdet ve Kemal Usta. Masada telsiz.'),
+    show('telsiz'),
     N('Kemal Usta son vidayı sıkıyor. Düğmeye basıyor. Hışırtı. Uzun bir hışırtı. Sonra bir ses.'),
     say('anlatici', '“…Yıldız’dan kıyıya… Koyda bir kayık var, feneri yok, karşı kıyıya, Şükran’ın evine doğru gidiyor…”'),
     say('anlatici', '“…bu havada batar… yardıma gidiyorum… motor… motor ses vermiyor…”'),
     N('Sonra yalnızca hışırtı. Kemal Usta düğmeyi kapatıyor. Kimse konuşmuyor.'),
+    hide,
     say('cevdet', 'Babam bir kayık için açılmış. Fırtınada, feneri olmayan bir kayık için.'),
     say('cevdet', 'Şükran’ın evine… Şükran ebe. O gece biri ebeye mi gidiyormuş?'),
     { t: 'item', id: 'kaset', name: 'Rıza Kaptan’ın telsiz kaseti' },
@@ -242,12 +248,14 @@ const day16: Day = {
   n: 16, chapter: 3, title: 'Mektuplar', weekday: 'Salı',
   morning: [
     bg('depo'),
+    show('mektup'),
     N('Sabaha kadar uyumadın. Deponun lambası altında mektupları tarih sırasına diziyorsun. İlki Eylül 1976.'),
     say('anlatici', '“Y., bugün kasaba seni suçladı. Ben sustum. Susmamı sen istedin ama ben yine de utanıyorum. — N.”'),
     say('anlatici', '“Y., Rıza’nın karısını gördüm bugün çarşıda. Gözlerimi kaçırdım. Bunu hiç unutmayacağım. — N.”'),
     N('Yıllar geçiyor. Mektuplar kısalıyor. Son mektup 2024 tarihli. El yazısı titrek.'),
     say('anlatici', '“Y., her sabah pencere kenarında oturuyorsun. Çayını ben koyuyorum. Elli yıldır tek kelime etmeden.”'),
     say('anlatici', '“Bu da bir çeşit konuşmak, değil mi? Ben gidince birisi çayını koysun diye defterin başına yazdım. — N.”'),
+    hide,
     D('Pencere kenarında. Her sabah. Tavşan kanı çay.'),
     D('Y. Sessiz Amca.'),
     flag('y_kim'),
@@ -380,6 +388,7 @@ const day18: Day = {
   morning: [
     bg('cayevi'),
     A('kepenk_ac'),
+    show('yagmur'),
     N('Yağmurlu bir sabah. Yaz boyunca ilk yağmur. Kepengi kaldırdığında Sessiz Amca kapının önünde, ıslanmış bekliyor.'),
     N('İçeri girip pencere kenarına oturuyor. Tavlayı açıyor. Karşısındaki sandalyeyi ayağıyla hafifçe ileri itiyor.'),
   ],

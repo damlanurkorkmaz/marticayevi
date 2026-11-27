@@ -193,7 +193,26 @@ const firtina = svg(`
   <rect x="58" y="410" width="54" height="8" fill="#6E5440"/><rect x="58" y="430" width="54" height="8" fill="#6E5440"/>
 `);
 
-export const BACKDROPS: Record<Backdrop, string> = { liman, cayevi, gece, fener, depo, telefon, tekne, firtina };
+/** Hilmi's olive grove in the afternoon, the elder tree at the end of the rows. */
+const zeytinlik = svg(`
+  <rect width="390" height="520" fill="#F2E2BE"/>
+  <circle cx="300" cy="90" r="34" fill="#F6CF86"/>
+  <path d="M0 210 C80 180 160 200 230 186 C300 172 350 190 390 184 L390 520 L0 520 Z" fill="#C7B58A"/>
+  <path d="M0 260 C90 236 200 250 390 236 L390 520 L0 520 Z" fill="#B9A577"/>
+  ${[[40, 230, 0.7], [130, 222, 0.75], [230, 214, 0.7], [330, 222, 0.72], [80, 300, 1], [210, 296, 1.05], [340, 304, 1]].map(([x, y, k]) => `
+    <g transform="translate(${x} ${y}) scale(${k})">
+      <path d="M-6 0 C-10 -30 -2 -50 -8 -70 M6 0 C10 -26 4 -46 12 -64" stroke="#6E5A44" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <ellipse cx="0" cy="-84" rx="52" ry="30" fill="#8A9A6A"/><ellipse cx="-24" cy="-96" rx="30" ry="18" fill="#9DAA7E"/><ellipse cx="26" cy="-92" rx="28" ry="18" fill="#7E8E60"/>
+    </g>`).join('')}
+  <g transform="translate(300 420)">
+    <path d="M0 0 V-90" stroke="#6E5A44" stroke-width="12"/>
+    <ellipse cx="0" cy="-110" rx="62" ry="40" fill="#7E8E60"/>
+    ${Array.from({ length: 22 }, (_, i) => `<circle cx="${((i * 37) % 100) - 50}" cy="${-110 + ((i * 23) % 50) - 25}" r="7" fill="#FBF8EC" stroke="#E6DCC0"/>`).join('')}
+  </g>
+  <path d="M0 470 C120 450 260 470 390 456 L390 520 L0 520 Z" fill="#A89464"/>
+`);
+
+export const BACKDROPS: Record<Backdrop, string> = { liman, cayevi, gece, fener, depo, telefon, tekne, firtina, zeytinlik };
 
 /** Pamuk the cat, drawn in the same flat style as the portraits. */
 export const PAMUK = svg(`

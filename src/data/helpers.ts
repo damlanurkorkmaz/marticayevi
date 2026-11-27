@@ -1,4 +1,4 @@
-import type { AnimName, Backdrop, CharId, Day, Node, Speaker } from '../types';
+import type { AnimName, Backdrop, CharId, Day, Node, PropName, Speaker } from '../types';
 
 // Small helpers so the script reads like a script.
 export const say = (who: Speaker, text: string): Node => ({ t: 'say', who, text });
@@ -8,6 +8,8 @@ export const bond = (who: CharId, n = 1): Node => ({ t: 'bond', who, n });
 export const flag = (name: string): Node => ({ t: 'flag', name });
 export const bg = (b: Backdrop): Node => ({ t: 'backdrop', bg: b });
 export const A = (name: AnimName): Node => ({ t: 'anim', name });
+export const show = (prop: PropName): Node => ({ t: 'show', prop });
+export const hide: Node = { t: 'hide' };
 
 /** Sessiz Amca's everyday visit: he only ever wants one thing. */
 export const yusufDaily = (extra: Node[] = []): Day['visits'][number] => ({

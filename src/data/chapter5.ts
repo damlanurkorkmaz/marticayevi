@@ -1,5 +1,5 @@
 import type { Day } from '../types';
-import { A, D, N, bg, bond, flag, say } from './helpers';
+import { A, bg, bond, D, flag, hide, N, say, show } from './helpers';
 
 // ---------------------------------------------------------------------------
 // BÖLÜM 5 — "Fırtına Gecesi"
@@ -144,6 +144,7 @@ const day27: Day = {
   n: 27, chapter: 5, title: 'Fırtına Gecesi', weekday: '2 Eylül',
   morning: [
     bg('cayevi'),
+    show('yagmur'),
     N('2 Eylül. Elli yıl sonra. Deniz sabahtan beri kükrüyor. Dalgalar iskelenin üstünden aşıyor.'),
   ],
   visits: [
@@ -171,10 +172,13 @@ const day27: Day = {
   ],
   evening: [
     bg('cayevi'),
+    show('yagmur'),
     N('Saat yedi. Cevdet beşte iskeleden çıktı. Karanfilleri bırakıp dönecekti. Dönmedi.'),
+    show('telsiz'),
     N('Tezgâhın üstünde Rıza Kaptan’ın telsizi cızırdıyor. Sonra bir ses. Elli yıl önceki sesin aynısı.'),
     say('anlatici', 'Cevdet’in sesi: “Yıldız II’den kıyıya… Motor durdu. Sürükleniyorum. Kayalık nerede göremiyorum. Hiçbir şey göremiyorum.”'),
     A('elektrik_kesik'),
+    hide,
     N('O anda bütün kasabanın ışıkları sönüyor. Elektrik kesildi. Pencereden bakıyorsun: fener de karanlık.'),
     say('sukran', 'Aynı gece. Aynı gece, Allah’ım.'),
     {
@@ -318,6 +322,7 @@ const day28: Day = {
   ],
   evening: [
     bg('cayevi'),
+    show('kalabalik'),
     N('Akşam. Fırtınanın ellinci yıl anması. İlk kez çay evinde. Bütün kasaba burada. Herkes sana bakıyor.'),
     N('Annen bir yanında, Yusuf Amca öbür yanında. Cebinde mektuplar, kaset, seyir defteri. Elli yıllık bir hikâyenin bütün parçaları.'),
     {

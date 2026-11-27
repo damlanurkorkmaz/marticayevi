@@ -1,5 +1,5 @@
 import type { Day } from '../types';
-import { A, D, N, bg, bond, flag, say, yusufDaily } from './helpers';
+import { A, bg, bond, D, flag, hide, N, say, show, yusufDaily } from './helpers';
 
 // ---------------------------------------------------------------------------
 // BÖLÜM 4 — "Ebe"
@@ -100,6 +100,7 @@ const day20: Day = {
             {
               text: 'Hilmi’yle zeytinliğe git',
               then: [
+                bg('zeytinlik'),
                 N('Öğleden sonra zeytinlikteyiz. Hilmi her ağacın yanında durup bir şey anlatıyor. Bu ağacı dedesi aşılamış, şunu Seda doğunca dikmişler.'),
                 N('En dipte mürver. Beyaz, şemsiye gibi açmış çiçekler. Gerçekten bal gibi kokuyor.'),
                 say('hilmi', 'Al. Ne kadar istersen al. Artık bu ağacı benden başka hatırlayan biri daha var.'),
@@ -154,9 +155,11 @@ const day21: Day = {
   n: 21, chapter: 4, title: 'Harman', weekday: 'Pazar',
   morning: [
     bg('cayevi'),
+    show('otlar'),
     N('Sabah erkenden tezgâhın başındasın. Adaçayı, kayalık kekiği, mürver çiçeği. Ve en son, bir tutam tuz.'),
     N('Defterin en son boş sayfasını açıyorsun. Kendi el yazınla ilk kez bir tarif yazıyorsun.'),
     { t: 'recipe', id: 'harman' },
+    hide,
     N('Dört dakika. Fazlası acı, azı tatsız. Bu çayın affı yok.'),
   ],
   visits: [
@@ -393,6 +396,7 @@ const day24: Day = {
   n: 24, chapter: 4, title: 'Fırtına Uyarısı', weekday: 'Çarşamba',
   morning: [
     bg('liman'),
+    show('radyo'),
     N('Ağustosun son günleri. Liman reisliği iskeleye kırmızı bir bayrak çekiyor. Radyo aynı haberi tekrarlıyor:'),
     say('anlatici', '“Meteorolojiden kuvvetli fırtına uyarısı: 2 Eylül gecesi Ege kıyılarında rüzgâr saatte 90 kilometreyi bulabilir.”'),
     D('2 Eylül. Elli yıl sonra. Aynı gece.'),

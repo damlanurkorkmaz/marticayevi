@@ -6,7 +6,7 @@ import { DRINKS, RECIPES } from '../src/data/drinks';
 import { runScene, type SceneUI } from '../src/engine/scene';
 import { newGame, save, load, addBond, MAX_BOND } from '../src/engine/state';
 import { payFor } from '../src/game';
-import { ITEM_IDS } from '../src/ui/props';
+import { ITEM_IDS, PROP_IDS } from '../src/ui/props';
 
 function* walk(nodes: Node[]): Generator<Node> {
   for (const n of nodes) {
@@ -38,6 +38,8 @@ function fakeUI(pick = 0): SceneUI & { lines: string[] } {
     enter: () => {},
     anim: async () => {},
     reveal: async () => {},
+    show: () => {},
+    hide: () => {},
   };
 }
 
@@ -75,6 +77,10 @@ describe('story data', () => {
 
   it('has a picture for every item the story hands out', () => {
     for (const n of allNodes()) if (n.t === 'item') expect(ITEM_IDS, n.id).toContain(n.id);
+  });
+
+  it('has a picture for every object the text shows', () => {
+    for (const n of allNodes()) if (n.t === 'show') expect(PROP_IDS, n.prop).toContain(n.prop);
   });
 
   it('has a recipe page for every drink', () => {

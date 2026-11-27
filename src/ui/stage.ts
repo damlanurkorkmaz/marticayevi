@@ -1,18 +1,19 @@
-import type { AnimName, Backdrop, CharId, DrinkId, GameState, Speaker } from '../types';
+import type { AnimName, Backdrop, CharId, DrinkId, GameState, PropName, Speaker } from '../types';
 import type { Reveal, SceneUI } from '../engine/scene';
 import { CHARACTERS } from '../data/characters';
 import { DRINKS, DRINK_ORDER } from '../data/drinks';
 import { BACKDROPS, COUNTER, PAMUK } from './art';
-import { BUS, DUST, PHONE, ROAD, SHUTTER, glassArt, itemArt } from './props';
+import { BUS, DUST, LAYER_PROPS, PHONE, ROAD, SHUTTER, glassArt, itemArt, propArt } from './props';
 import { el, nextTap, prefersReducedMotion, wait } from './dom';
 import { openNotebook, openTown } from './overlays';
 
 const NAME_COLORS: Partial<Record<Speaker, string>> = {
   deniz: '#1F4E6B', yusuf: '#5E6B5C', sukran: '#7B4F6A', cevdet: '#1F4E6B',
-  elif: '#B5432A', hilmi: '#4A4038', kemal: '#3F5A6E', anne: '#6B4A5E', pamuk: '#8A7E74',
+  elif: '#B5432A', hilmi: '#4A4038', kemal: '#3F5A6E', tuncer: '#22324A', anne: '#6B4A5E', pamuk: '#8A7E74',
 };
 
-const VOWELS = /[aeıioöuüâîûAEIİOÖUÜ]/;
+/** Mouth open/close rhythm while a line is typed: slow enough to read as speech. */
+const FLAP_MS = 190;
 
 export type BrewResult = 'mukemmel' | 'iyi' | 'olmadi';
 
@@ -73,6 +74,8 @@ export class Stage implements SceneUI {
   private self = new Actor('self');
   private counterEl = el('div', { class: 'counter', html: COUNTER });
   private fxEl = el('div', { class: 'fx', 'aria-hidden': 'true' });
+  private layerEl = el('div', { class: 'layer', 'aria-hidden': 'true' });
+  private insetEl = el('div', { class: 'inset', 'aria-hidden': 'true' });
   private panel = el('div', { class: 'panel' });
   private toasts = el('div', { class: 'toasts', role: 'status' });
   private overlay = el('div', { class: 'overlay-host' });
@@ -91,7 +94,7 @@ export class Stage implements SceneUI {
         btn('Ana menü', ICON_MENU, onMenu),
       ),
     );
-    this.stageEl = el('div', { class: 'stage' }, this.backdropEl, this.other.el, this.self.el, this.counterEl, this.fxEl);
+    this.stageEl = el('div', { class: 'stage' }, this.backdropEl, this.layerEl, this.other.el, this.self.el, this.counterEl, this.fxEl, this.insetEl);
     // Tapping the picture advances dialogue too, not just the text box.
     this.stageEl.addEventListener('click', () => (this.panel.querySelector('.dialogue') as HTMLElement | null)?.click());
     this.root = el('div', { class: 'screen game' }, hud, this.stageEl, this.panel, this.toasts, this.overlay);
@@ -109,6 +112,8 @@ export class Stage implements SceneUI {
     this.backdropEl.dataset.bg = bg;
     this.counterEl.hidden = bg !== 'cayevi';
     this.fxEl.replaceChildren();
+    this.layerEl.replaceChildren();
+    this.hide();
     this.setActor(null);
     this.setSelf(false);
   }
@@ -162,12 +167,14 @@ export class Stage implements SceneUI {
     const skipper = () => { skip = true; };
     box.addEventListener('click', skipper, { once: true });
     if (prefersReducedMotion()) skip = true;
+    let open = false;
+    const flap = speaker ? setInterval(() => { open = !open; speaker.mouth(open); }, FLAP_MS) : undefined;
     for (let i = 1; i <= text.length && !skip; i++) {
       const ch = text[i - 1];
       textEl.textContent = text.slice(0, i);
-      speaker?.mouth(VOWELS.test(ch));
       await wait(ch === '.' || ch === '?' || ch === '!' ? 120 : 24);
     }
+    clearInterval(flap);
     box.removeEventListener('click', skipper);
     textEl.textContent = text;
     speaker?.mouth(false);
@@ -237,12 +244,33 @@ export class Stage implements SceneUI {
     if (!keep) added.forEach((n) => n.remove());
   }
 
+  show(prop: PropName) {
+    if (LAYER_PROPS.includes(prop)) {
+      this.layerEl.replaceChildren(el('div', { class: `layer-${prop}`, html: propArt(prop) }));
+      return;
+    }
+    this.insetEl.classList.toggle('tall', prop.startsWith('video'));
+    this.insetEl.replaceChildren(el('div', { class: 'inset-card', html: propArt(prop) }));
+    this.insetEl.classList.remove('in');
+    requestAnimationFrame(() => requestAnimationFrame(() => this.insetEl.classList.add('in')));
+  }
+
+  hide() {
+    this.insetEl.classList.remove('in');
+    this.insetEl.replaceChildren();
+  }
+
+  /** Puts the served drink on the counter in front of the customer until they leave. */
+  serveDrink(id: DrinkId) {
+    this.fxEl.querySelector('.fx-served')?.remove();
+    this.fxEl.append(el('div', { class: 'fx-served', html: glassArt(id) }));
+  }
+
   /** Big card for a found item or a new recipe, so it cannot be missed. */
   async reveal(r: Reveal): Promise<void> {
     const art = r.kind === 'recipe' ? glassArt(r.id) : itemArt(r.id);
     const c = el('div', { class: 'reveal', tabindex: '0', role: 'dialog', 'aria-label': r.name },
       el('div', { class: 'reveal-card' },
-        el('div', { class: 'reveal-rays', 'aria-hidden': 'true' }),
         el('div', { class: 'reveal-art', html: art }),
         el('span', { class: 'kicker' }, r.kind === 'recipe' ? 'DEFTERE YENİ TARİF' : 'YENİ EŞYA'),
         el('h2', {}, r.name),
@@ -266,7 +294,7 @@ export class Stage implements SceneUI {
         if (!this.state.recipes.includes(id)) continue;
         const d = DRINKS[id];
         grid.append(el('button', { class: 'drink', onclick: () => resolve(id) },
-          el('span', { class: 'swatch', style: `background:${d.color}` }),
+          el('span', { class: 'drink-art', html: glassArt(id) }),
           el('span', { class: 'drink-name' }, d.name),
           el('span', { class: 'drink-price' }, `₺${d.price}`),
         ));
@@ -294,7 +322,7 @@ export class Stage implements SceneUI {
       const label = el('p', { class: 'brew-hint' }, 'İbre yeşil alana geldiğinde dokun.');
       const go = el('button', { class: 'btn primary big' }, d.verb);
       const sheet = el('div', { class: 'brew' },
-        el('div', { class: 'brew-title' }, el('span', { class: 'swatch', style: `background:${d.color}` }), el('h3', {}, d.name)),
+        el('div', { class: 'brew-title' }, el('span', { class: 'drink-art', html: glassArt(id) }), el('h3', {}, d.name)),
         bar, label, go);
       this.panel.replaceChildren(sheet);
       go.focus({ preventScroll: true });

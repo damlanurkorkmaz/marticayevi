@@ -1,5 +1,5 @@
 import type { Day } from '../types';
-import { A, D, N, bg, bond, flag, say, yusufDaily } from './helpers';
+import { A, bg, bond, D, flag, hide, N, say, show, yusufDaily } from './helpers';
 import { CHAPTER_2 } from './chapter2';
 import { CHAPTER_3 } from './chapter3';
 import { CHAPTER_4 } from './chapter4';
@@ -92,9 +92,11 @@ const day2: Day = {
     A('kepenk_ac'),
     N('Sabah 07.30. Kepengi kaldırdığında kapının önünde biri bekliyor.'),
     N('Yaşlı bir adam. Başında eski bir kasket, üstünde el örgüsü bir yelek. Seni görünce hiçbir şey söylemeden içeri giriyor ve pencere kenarındaki masaya oturuyor.'),
+    show('tavla'),
     N('Masada bir tavla duruyor. Adam pulları tek tek diziyor. Kimseyi beklemeden, tek başına oynamaya başlıyor.'),
     D('Günaydın? Ne alırsınız?'),
     N('Cevap yok. Sadece pencereden koyun karşısındaki fenere bakıyor.'),
+    hide,
   ],
   visits: [
     {
@@ -198,8 +200,10 @@ const day3: Day = {
       ],
       after: [
         say('elif', 'Neyse, asıl konu bu. Pazartesi gecesi çektim. Bak.'),
+        show('video_fener'),
         N('Telefonun ekranında titrek bir görüntü: koy, karanlık, sonra fenerin tepesinde sarı bir ışık. Saat 00.00.'),
         say('elif', 'Herkes hayalet diyor. Ben kanıt istiyorum. Bu gece fenere gidiyorum. Sen de gel, iki kamera daha iyi.'),
+        hide,
         flag('elif_davet'),
       ],
     },
@@ -462,9 +466,11 @@ const day6: Day = {
     bg('gece'),
     N('Saat 01.20. Telefonun çalıyor. Elif. Fısıltıyla konuşuyor.'),
     say('elif', 'Uyanık mısın? Kamerayı aldım. Kaydı izledim. Sana gönderiyorum, şimdi bak.'),
+    show('video_siluet'),
     N('Görüntü karanlık. Saat 03.12. Patikadan biri geliyor. Yavaş, biraz topal.'),
     N('Kilidi bir anahtarla açıyor. Kapıyı itiyor. Tam içeri girerken başını bir an kameraya çeviriyor.'),
     N('Yüzü seçilmiyor. Ama başında eski, yuvarlak bir kasket var.'),
+    hide,
     {
       t: 'if', flag: 'pul_gosterildi',
       then: [D('O kasketi tanıyorum. Her sabah pencere kenarında oturuyor.')],

@@ -38,6 +38,11 @@ export const CHARACTERS: Record<CharId, Character> = {
     note: 'Kasabanın bütün kilitlerini o takar. Anahtarlarını da o yapar.', drink: 'Ihlamur, limonlu',
     portrait: P('kemal'), cut: P('kemal_cut'), talk: P('kemal_cut_open'), hiddenUntilMet: true,
   },
+  tuncer: {
+    id: 'tuncer', name: 'Tuncer Bey', role: 'Liman Otelcilik, İzmir',
+    note: 'Jöleli saçlar, parlak ayakkabılar. Her şeye “milyon dolar” diyor.', drink: 'Hiçbir şey içmez',
+    portrait: P('tuncer'), cut: P('tuncer_cut'), talk: P('tuncer_cut_open'), hiddenUntilMet: true,
+  },
   anne: {
     id: 'anne', name: 'Annem', role: 'Yıldız, 50 · İstanbul',
     note: 'Bu kasabaya hiç gelmiyor. Nedenini söylemiyor.', drink: '—',
@@ -51,4 +56,4 @@ export const CHARACTERS: Record<CharId, Character> = {
 };
 
 /** Order of cards in the town book. */
-export const TOWN_ORDER: CharId[] = ['yusuf', 'sukran', 'elif', 'cevdet', 'hilmi', 'kemal', 'pamuk', 'anne', 'deniz'];
+export const TOWN_ORDER: CharId[] = ['yusuf', 'sukran', 'elif', 'cevdet', 'hilmi', 'kemal', 'tuncer', 'pamuk', 'anne', 'deniz'];

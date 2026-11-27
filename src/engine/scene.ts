@@ -1,4 +1,4 @@
-import type { AnimName, Backdrop, CharId, DrinkId, GameState, Node, Speaker } from '../types';
+import type { AnimName, Backdrop, CharId, DrinkId, GameState, Node, PropName, Speaker } from '../types';
 import { CHARACTERS } from '../data/characters';
 import { DRINKS } from '../data/drinks';
 import { addBond, addItem, hasFlag, meet, setFlag, unlockRecipe } from './state';
@@ -15,6 +15,9 @@ export interface SceneUI {
   anim(name: AnimName): Promise<void>;
   /** Shows a found item or a new recipe big, so the player notices it. */
   reveal(r: Reveal): Promise<void>;
+  /** Shows something the text is describing until `hide`, the next `show` or a new backdrop. */
+  show(prop: PropName): void;
+  hide(): void;
 }
 
 export type Reveal = { kind: 'item'; id: string; name: string } | { kind: 'recipe'; id: DrinkId; name: string };
@@ -67,6 +70,12 @@ export async function runScene(nodes: Node[], s: GameState, ui: SceneUI): Promis
         break;
       case 'anim':
         await ui.anim(node.name);
+        break;
+      case 'show':
+        ui.show(node.prop);
+        break;
+      case 'hide':
+        ui.hide();
         break;
       case 'card':
         await ui.card(node.title, node.subtitle);
