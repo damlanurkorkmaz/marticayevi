@@ -4,7 +4,7 @@
 export type CharId = 'deniz' | 'yusuf' | 'sukran' | 'cevdet' | 'elif' | 'hilmi' | 'kemal' | 'anne' | 'pamuk';
 export type Speaker = CharId | 'anlatici';
 export type DrinkId = 'tavsan' | 'adacayi' | 'kahve' | 'limonata' | 'ihlamur';
-export type Backdrop = 'liman' | 'cayevi' | 'gece' | 'fener' | 'depo' | 'telefon';
+export type Backdrop = 'liman' | 'cayevi' | 'gece' | 'fener' | 'depo' | 'telefon' | 'tekne';
 
 /** A single step in a scripted scene. Scenes are arrays of nodes run in order. */
 export type Node =

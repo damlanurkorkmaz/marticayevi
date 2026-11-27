@@ -1,6 +1,7 @@
 import type { Day } from '../types';
 import { D, N, bg, bond, flag, say, yusufDaily } from './helpers';
 import { CHAPTER_2 } from './chapter2';
+import { CHAPTER_3 } from './chapter3';
 
 // ---------------------------------------------------------------------------
 // PROLOG — "Kepenk"
@@ -474,12 +475,13 @@ export const CHAPTERS: Record<number, { label: string; title: string }> = {
   0: { label: 'Prolog', title: 'Kepenk' },
   1: { label: 'Bölüm 1', title: 'İlk Müşteriler' },
   2: { label: 'Bölüm 2', title: 'Muhtarın Planı' },
+  3: { label: 'Bölüm 3', title: 'Yıldız’ın Hikâyesi' },
 };
 
 /** Shown on the end screen until the next chapter ships. */
-export const NEXT_UP = 'Bölüm 3, “Yıldız’ın Hikâyesi”';
+export const NEXT_UP = 'Bölüm 4, “Ebe”';
 
-export const DAYS: Day[] = [day1, day2, day3, day4, day5, day6, ...CHAPTER_2];
+export const DAYS: Day[] = [day1, day2, day3, day4, day5, day6, ...CHAPTER_2, ...CHAPTER_3];
 
 export const LAST_DAY = DAYS[DAYS.length - 1].n;
 

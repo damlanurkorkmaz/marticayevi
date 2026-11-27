@@ -141,7 +141,30 @@ const telefon = svg(`
   <rect x="30" y="300" width="330" height="40" rx="10" fill="#6B4A5E"/>
 `);
 
-export const BACKDROPS: Record<Backdrop, string> = { liman, cayevi, gece, fener, depo, telefon };
+const tekne = svg(`
+  <rect width="390" height="520" fill="#F2C9A8"/>
+  <rect y="0" width="390" height="120" fill="#E7B7A0"/>
+  <rect y="120" width="390" height="90" fill="#F2C9A8"/>
+  <circle cx="250" cy="236" r="40" fill="#F9DDA0"/>
+  <path d="M40 90 q40 -14 80 0 q30 -10 60 0" stroke="#F6E2D2" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.8"/>
+  <path d="M230 60 q30 -10 60 0" stroke="#F6E2D2" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.8"/>
+  <path d="M0 236 C60 226 90 230 130 232 L130 240 L0 240 Z" fill="#A98F86"/>
+  <rect x="44" y="214" width="7" height="22" fill="#FFFDF8"/><rect x="44" y="220" width="7" height="4" fill="#B5432A"/><rect x="42" y="208" width="11" height="7" fill="#2B2622"/>
+  <path d="M300 238 C330 228 360 228 390 234 L390 240 L300 240 Z" fill="#B49A8E"/>
+  <rect x="338" y="226" width="12" height="9" fill="#FFFDF8"/><path d="M336 227 L344 220 L352 227 Z" fill="#B5432A"/>
+  <rect y="238" width="390" height="282" fill="#4F86A0"/>
+  <path d="M250 246 l-30 0 M250 262 l40 0 M250 280 l-50 0 M250 300 l60 0" stroke="#F9DDA0" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+  <path d="M20 300 h40 M110 330 h50 M300 340 h40 M60 370 h60" stroke="#8CC0D6" stroke-width="3" stroke-linecap="round"/>
+  ${[[150, 330], [168, 342], [140, 350], [180, 326], [160, 360]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#C0392B"/><path d="M${x} ${y + 4} l-4 10" stroke="#4C8A5A" stroke-width="2"/>`).join('')}
+  <path d="M-10 520 L40 410 L350 410 L400 520 Z" fill="#8A5D38"/>
+  <path d="M40 410 L350 410 L344 424 L46 424 Z" fill="#A9774A"/>
+  ${[0, 1, 2, 3, 4, 5].map((i) => `<path d="M${30 + i * 4} ${440 + i * 14} L${360 - i * 4} ${440 + i * 14}" stroke="#7A5232" stroke-width="2"/>`).join('')}
+  <rect x="30" y="378" width="8" height="40" fill="#5A3E28"/><rect x="352" y="378" width="8" height="40" fill="#5A3E28"/>
+  <path d="M34 380 L356 380" stroke="#F6EFE2" stroke-width="5" stroke-linecap="round"/>
+  <path d="M190 412 c0 -30 10 -50 30 -56" stroke="#D9C9A8" stroke-width="5" fill="none" stroke-linecap="round"/>
+`);
+
+export const BACKDROPS: Record<Backdrop, string> = { liman, cayevi, gece, fener, depo, telefon, tekne };
 
 /** Pamuk the cat, drawn in the same flat style as the portraits. */
 export const PAMUK = svg(`

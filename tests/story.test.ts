@@ -99,7 +99,7 @@ describe('scene runner', () => {
       }
       expect(ui.lines.length).toBeGreaterThan(100);
       expect(s.recipes).toEqual(expect.arrayContaining(['tavsan', 'adacayi', 'limonata', 'kahve', 'ihlamur']));
-      expect(s.flags).toEqual(expect.arrayContaining(['hilmi_degil', 'kopya_anahtar', 'satis_iptal']));
+      expect(s.flags).toEqual(expect.arrayContaining(['hilmi_degil', 'kopya_anahtar', 'satis_iptal', 'kaset', 'mektuplar', 'y_kim', 'yusuf_isim']));
       if (pick === 0) {
         expect(s.flags).toContain('pul_ikisi');
         expect(s.flags).toContain('pul_gosterildi');
