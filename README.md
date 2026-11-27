@@ -2,7 +2,7 @@
 
 Ege'de küçük bir kasaba, babaanneden kalan bir çay evi ve elli yıldır sönük duran bir fener. Hikâye odaklı, rahat oynanışlı bir mobil oyun.
 
-Bu depo oyunun **ilk fazını** içerir: Prolog (“Kepenk”) ve 1. bölüm (“İlk Müşteriler”). Toplam altı oyun günü, yaklaşık 30–45 dakikalık oynanış.
+Şu an oynanabilir olanlar: Prolog (“Kepenk”), 1. bölüm (“İlk Müşteriler”) ve 2. bölüm (“Muhtarın Planı”). Toplam on iki oyun günü, yaklaşık 1–1,5 saatlik oynanış.
 
 ## Neler var?
 
@@ -43,7 +43,9 @@ Yazı tipleri (Fraunces, Nunito, Caveat) pakete gömülüdür, oyun internetsiz 
 ```
 src/
   data/
-    story.ts        # Günler, müşteriler, diyaloglar, seçimler: bütün senaryo burada
+    story.ts        # Prolog ve 1. bölüm; bölüm listesi ve gün sırası
+    chapter2.ts     # 2. bölüm: Muhtarın Planı
+    helpers.ts      # Senaryo yazarken kullanılan kısayollar (say, N, D, bond, flag…)
     characters.ts   # Karakter adları, rolleri, portreleri
     drinks.ts       # İçecekler, fiyatlar, demleme zorluğu, defter tarifleri ve anılar
   engine/
@@ -61,7 +63,7 @@ tests/story.test.ts        # Senaryo bütünlüğü ve kurallar
 
 ## Yeni gün ya da sahne eklemek
 
-Senaryo tamamen veri olarak yazılıdır; motoru değiştirmeden `src/data/story.ts` içine yeni günler eklenebilir. Bir gün şu parçalardan oluşur:
+Senaryo tamamen veri olarak yazılıdır; motoru değiştirmeden yeni günler eklenebilir. Her bölüm kendi dosyasında durur (örneğin `src/data/chapter2.ts`) ve `story.ts` içindeki `DAYS` listesine eklenir. Bir gün şu parçalardan oluşur:
 
 ```ts
 {
@@ -74,10 +76,10 @@ Senaryo tamamen veri olarak yazılıdır; motoru değiştirmeden `src/data/story
 }
 ```
 
-Kullanılabilen düğümler: `say`, `choice`, `bond`, `flag`, `if`, `money`, `recipe`, `item`, `backdrop`, `card`. Yeni bir bölüm eklerken `CHAPTERS` listesine de adını yazın.
+Kullanılabilen düğümler: `say`, `choice`, `bond`, `flag`, `if`, `money`, `recipe`, `item`, `backdrop`, `card`, `enter` (müşteriyi sahnenin ortasında içeri sokar). Yeni bir bölüm eklerken `CHAPTERS` listesine adını, `NEXT_UP` satırına da sıradaki bölümü yazın.
 
 `npm test` her değişiklikte şunları kontrol eder: bilinmeyen karakter ya da içecek kullanılmamış mı, kontrol edilen her bayrak bir yerde açılıyor mu, bir müşteri tarifi henüz açılmamış bir içecek istiyor mu, satırlar telefona sığacak uzunlukta mı, ve oyun baştan sona iki farklı seçim yoluyla hatasız oynanabiliyor mu.
 
 ## Sonraki fazlar
 
-Hikâyenin tamamı (5 bölüm, 3 son) ve sonraki yazlar için senaryo taslağı ayrı bir belgede tutuluyor. Sıradaki faz: **Bölüm 2 — Muhtarın Planı.**
+Hikâyenin tamamı (5 bölüm, 3 son) ve sonraki yazlar için senaryo taslağı ayrı bir belgede tutuluyor. Sıradaki: **Bölüm 3 — Yıldız’ın Hikâyesi.**

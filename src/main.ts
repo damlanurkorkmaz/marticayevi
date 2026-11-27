@@ -8,7 +8,7 @@ import '@fontsource/caveat/500.css';
 import '@fontsource/caveat/700.css';
 import './styles.css';
 import { clearSave, load, newGame } from './engine/state';
-import { LAST_DAY } from './data/story';
+import { CHAPTERS, LAST_DAY, getDay } from './data/story';
 import { play } from './game';
 import { TITLE_ART } from './ui/art';
 import { el } from './ui/dom';
@@ -35,7 +35,7 @@ function showTitle(): void {
   };
 
   const progress = saved
-    ? saved.day > LAST_DAY ? 'İlk faz tamamlandı' : `${saved.day <= 2 ? 'Prolog' : 'Bölüm 1'} · Gün ${saved.day}`
+    ? saved.day > LAST_DAY ? 'Şimdilik son bölüm bitti' : `${CHAPTERS[getDay(saved.day)!.chapter].label} · Gün ${saved.day}`
     : null;
 
   const card = el('div', { class: 'title-card' },
@@ -48,7 +48,7 @@ function showTitle(): void {
         : null,
       el('button', { class: `btn big${saved ? '' : ' primary'}`, onclick: confirmNew }, saved ? 'Yeni oyun' : 'Başla'),
     ),
-    el('p', { class: 'credit' }, 'İlk faz · Prolog ve 1. bölüm'),
+    el('p', { class: 'credit' }, 'Prolog, 1. ve 2. bölüm'),
   );
 
   app.replaceChildren(

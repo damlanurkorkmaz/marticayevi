@@ -34,6 +34,7 @@ function fakeUI(pick = 0): SceneUI & { lines: string[] } {
     toast: () => {},
     backdrop: () => {},
     card: async () => {},
+    enter: () => {},
   };
 }
 
@@ -97,7 +98,8 @@ describe('scene runner', () => {
         await runScene(d.night ?? [], s, ui);
       }
       expect(ui.lines.length).toBeGreaterThan(100);
-      expect(s.recipes).toEqual(expect.arrayContaining(['tavsan', 'adacayi', 'limonata', 'kahve']));
+      expect(s.recipes).toEqual(expect.arrayContaining(['tavsan', 'adacayi', 'limonata', 'kahve', 'ihlamur']));
+      expect(s.flags).toEqual(expect.arrayContaining(['hilmi_degil', 'kopya_anahtar', 'satis_iptal']));
       if (pick === 0) {
         expect(s.flags).toContain('pul_ikisi');
         expect(s.flags).toContain('pul_gosterildi');

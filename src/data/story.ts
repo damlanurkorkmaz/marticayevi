@@ -1,12 +1,6 @@
-import type { Backdrop, CharId, Day, Node, Speaker } from '../types';
-
-// Small helpers so the script reads like a script.
-const say = (who: Speaker, text: string): Node => ({ t: 'say', who, text });
-const N = (text: string): Node => say('anlatici', text);
-const D = (text: string): Node => say('deniz', text);
-const bond = (who: CharId, n = 1): Node => ({ t: 'bond', who, n });
-const flag = (name: string): Node => ({ t: 'flag', name });
-const bg = (b: Backdrop): Node => ({ t: 'backdrop', bg: b });
+import type { Day } from '../types';
+import { D, N, bg, bond, flag, say, yusufDaily } from './helpers';
+import { CHAPTER_2 } from './chapter2';
 
 // ---------------------------------------------------------------------------
 // PROLOG — "Kepenk"
@@ -165,14 +159,6 @@ const day2: Day = {
 // ---------------------------------------------------------------------------
 // BÖLÜM 1 — "İlk Müşteriler"
 // ---------------------------------------------------------------------------
-
-const yusufDaily = (extra: Node[] = []): Day['visits'][number] => ({
-  who: 'yusuf',
-  arrive: [N('Sessiz Amca her sabahki gibi pencere kenarında. Tavlanın pullarını diziyor ve boş bardağına hafifçe vuruyor.')],
-  wants: 'tavsan',
-  right: [N('Bir yudum. Başını sallıyor. Pencere, fener, tavla. Her sabah aynı.'), bond('yusuf'), ...extra],
-  wrong: [N('Bardağı yine kenara itiyor. Bu adam ne istediğini biliyor ve başka hiçbir şey istemiyor.')],
-});
 
 const day3: Day = {
   n: 3, chapter: 1, title: 'Hayalet Kanalı', weekday: 'Çarşamba',
@@ -487,9 +473,13 @@ const day6: Day = {
 export const CHAPTERS: Record<number, { label: string; title: string }> = {
   0: { label: 'Prolog', title: 'Kepenk' },
   1: { label: 'Bölüm 1', title: 'İlk Müşteriler' },
+  2: { label: 'Bölüm 2', title: 'Muhtarın Planı' },
 };
 
-export const DAYS: Day[] = [day1, day2, day3, day4, day5, day6];
+/** Shown on the end screen until the next chapter ships. */
+export const NEXT_UP = 'Bölüm 3, “Yıldız’ın Hikâyesi”';
+
+export const DAYS: Day[] = [day1, day2, day3, day4, day5, day6, ...CHAPTER_2];
 
 export const LAST_DAY = DAYS[DAYS.length - 1].n;
 

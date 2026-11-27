@@ -1,9 +1,9 @@
 // Shared game types. Story content lives in src/data and is pure data,
 // so writers can add days and scenes without touching the engine.
 
-export type CharId = 'deniz' | 'yusuf' | 'sukran' | 'cevdet' | 'elif' | 'hilmi' | 'anne' | 'pamuk';
+export type CharId = 'deniz' | 'yusuf' | 'sukran' | 'cevdet' | 'elif' | 'hilmi' | 'kemal' | 'anne' | 'pamuk';
 export type Speaker = CharId | 'anlatici';
-export type DrinkId = 'tavsan' | 'adacayi' | 'kahve' | 'limonata';
+export type DrinkId = 'tavsan' | 'adacayi' | 'kahve' | 'limonata' | 'ihlamur';
 export type Backdrop = 'liman' | 'cayevi' | 'gece' | 'fener' | 'depo' | 'telefon';
 
 /** A single step in a scripted scene. Scenes are arrays of nodes run in order. */
@@ -17,7 +17,9 @@ export type Node =
   | { t: 'item'; id: string; name: string }
   | { t: 'if'; flag: string; then: Node[]; else?: Node[] }
   | { t: 'backdrop'; bg: Backdrop }
-  | { t: 'card'; title: string; subtitle?: string };
+  | { t: 'card'; title: string; subtitle?: string }
+  /** Brings a character on screen. A visit containing one starts with an empty counter. */
+  | { t: 'enter'; who: CharId };
 
 export interface ChoiceOption {
   text: string;
@@ -38,7 +40,7 @@ export interface Visit {
 
 export interface Day {
   n: number;
-  chapter: 0 | 1;
+  chapter: number;
   /** Short label shown on the day card, e.g. "Kepenk". */
   title: string;
   weekday: string;

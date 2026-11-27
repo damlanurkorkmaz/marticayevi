@@ -1,5 +1,5 @@
 import type { Day, GameState, Visit } from './types';
-import { CHAPTERS, DAYS, LAST_DAY, getDay } from './data/story';
+import { CHAPTERS, DAYS, LAST_DAY, NEXT_UP, getDay } from './data/story';
 import { DRINKS } from './data/drinks';
 import { CHARACTERS } from './data/characters';
 import { runScene } from './engine/scene';
@@ -65,8 +65,9 @@ async function playDay(day: Day, s: GameState, stage: Stage): Promise<void> {
 
 async function serve(v: Visit, s: GameState, stage: Stage): Promise<void> {
   stage.backdrop('cayevi');
-  stage.setActor(v.who);
+  if (!v.arrive.some((n) => n.t === 'enter')) stage.setActor(v.who);
   await runScene(v.arrive, s, stage);
+  stage.setActor(v.who);
 
   const drink = await stage.pickDrink();
   const q = await stage.brew(drink);
@@ -108,9 +109,9 @@ async function showEnd(s: GameState, stage: Stage): Promise<void> {
   stage.backdrop('gece');
   stage.refreshHud('Devamı yakında');
   const body = el('div', { class: 'chapter-end' },
-    el('span', { class: 'kicker' }, 'İLK FAZIN SONU'),
+    el('span', { class: 'kicker' }, 'ŞİMDİLİK BU KADAR'),
     el('h2', {}, 'Fener seni bekliyor'),
-    el('p', {}, 'Prolog ve 1. bölümü bitirdin. 2. bölüm, “Muhtarın Planı”, yakında.'),
+    el('p', {}, `${CHAPTERS[DAYS[DAYS.length - 1].chapter].label} tamamlandı. ${NEXT_UP} yakında.`),
     el('div', { class: 'summary-row' }, el('span', {}, 'İkram edilen'), el('strong', {}, String(s.served))),
     el('div', { class: 'summary-row' }, el('span', {}, 'Kusursuz demleme'), el('strong', {}, String(s.perfect))),
     el('div', { class: 'summary-row' }, el('span', {}, 'Kasa'), el('strong', {}, `₺${s.money}`)),
