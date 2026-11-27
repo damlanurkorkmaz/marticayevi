@@ -7,8 +7,8 @@ import '@fontsource/nunito/800.css';
 import '@fontsource/caveat/500.css';
 import '@fontsource/caveat/700.css';
 import './styles.css';
-import { clearSave, load, newGame } from './engine/state';
-import { CHAPTERS, LAST_DAY, getDay } from './data/story';
+import { clearSave, load, newGame, seenEndings } from './engine/state';
+import { CHAPTERS, ENDINGS, LAST_DAY, getDay } from './data/story';
 import { play } from './game';
 import { TITLE_ART } from './ui/art';
 import { el } from './ui/dom';
@@ -35,7 +35,7 @@ function showTitle(): void {
   };
 
   const progress = saved
-    ? saved.day > LAST_DAY ? 'Şimdilik son bölüm bitti' : `${CHAPTERS[getDay(saved.day)!.chapter].label} · Gün ${saved.day}`
+    ? saved.day > LAST_DAY ? 'Hikâye tamamlandı' : `${CHAPTERS[getDay(saved.day)!.chapter].label} · Gün ${saved.day}`
     : null;
 
   const card = el('div', { class: 'title-card' },
@@ -48,7 +48,7 @@ function showTitle(): void {
         : null,
       el('button', { class: `btn big${saved ? '' : ' primary'}`, onclick: confirmNew }, saved ? 'Yeni oyun' : 'Başla'),
     ),
-    el('p', { class: 'credit' }, 'Prolog ve ilk dört bölüm'),
+    el('p', { class: 'credit' }, endingsLine()),
   );
 
   app.replaceChildren(
@@ -58,6 +58,11 @@ function showTitle(): void {
       card,
     ),
   );
+}
+
+function endingsLine(): string {
+  const n = ENDINGS.filter((e) => seenEndings().includes(e.flag)).length;
+  return n ? `Bulduğun sonlar: ${n} / ${ENDINGS.length}` : 'Prolog ve 5 bölüm · 3 son';
 }
 
 showTitle();

@@ -85,3 +85,26 @@ export function clearSave(): void {
     /* ignore */
   }
 }
+
+const ENDINGS_KEY = 'marticayevi.endings.v1';
+
+/** Endings are remembered across playthroughs so the title screen can count them. */
+export function recordEnding(id: string): void {
+  const all = seenEndings();
+  if (all.includes(id)) return;
+  try {
+    storage()?.setItem(ENDINGS_KEY, JSON.stringify([...all, id]));
+  } catch {
+    /* ignore */
+  }
+}
+
+export function seenEndings(): string[] {
+  try {
+    const raw = storage()?.getItem(ENDINGS_KEY);
+    const v = raw ? JSON.parse(raw) : [];
+    return Array.isArray(v) ? v.filter((x) => typeof x === 'string') : [];
+  } catch {
+    return [];
+  }
+}

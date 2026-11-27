@@ -79,7 +79,8 @@ export class Stage implements SceneUI {
   }
 
   async say(who: Speaker, text: string): Promise<void> {
-    if (who !== 'anlatici' && who !== 'deniz' && who !== 'anne') this.setActor(who);
+    const onPhone = who === 'anne' && this.backdropEl.dataset.bg === 'telefon';
+    if (who !== 'anlatici' && who !== 'deniz' && !onPhone) this.setActor(who);
     const isNarr = who === 'anlatici';
     const name = isNarr ? null : CHARACTERS[who].name;
     const textEl = el('p', { class: 'line-text' });

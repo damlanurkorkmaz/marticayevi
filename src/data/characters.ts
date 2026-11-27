@@ -39,9 +39,9 @@ export const CHARACTERS: Record<CharId, Character> = {
     portrait: P('kemal'), cut: P('kemal_cut'), hiddenUntilMet: true,
   },
   anne: {
-    id: 'anne', name: 'Annem', role: 'Telefonda, İstanbul',
+    id: 'anne', name: 'Annem', role: 'Yıldız, 50 · İstanbul',
     note: 'Bu kasabaya hiç gelmiyor. Nedenini söylemiyor.', drink: '—',
-    hiddenUntilMet: true,
+    portrait: P('anne'), cut: P('anne_cut'), hiddenUntilMet: true,
   },
   pamuk: {
     id: 'pamuk', name: 'Pamuk', role: 'Çay evinin kedisi',

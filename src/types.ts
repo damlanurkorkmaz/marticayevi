@@ -4,7 +4,7 @@
 export type CharId = 'deniz' | 'yusuf' | 'sukran' | 'cevdet' | 'elif' | 'hilmi' | 'kemal' | 'anne' | 'pamuk';
 export type Speaker = CharId | 'anlatici';
 export type DrinkId = 'tavsan' | 'adacayi' | 'kahve' | 'limonata' | 'ihlamur' | 'harman';
-export type Backdrop = 'liman' | 'cayevi' | 'gece' | 'fener' | 'depo' | 'telefon' | 'tekne';
+export type Backdrop = 'liman' | 'cayevi' | 'gece' | 'fener' | 'depo' | 'telefon' | 'tekne' | 'firtina';
 
 /** A single step in a scripted scene. Scenes are arrays of nodes run in order. */
 export type Node =
@@ -16,6 +16,8 @@ export type Node =
   | { t: 'recipe'; id: DrinkId }
   | { t: 'item'; id: string; name: string }
   | { t: 'if'; flag: string; then: Node[]; else?: Node[] }
+  /** Runs `then` when every listed character's bond is at least `min`. */
+  | { t: 'ifBond'; who: CharId[]; min: number; then: Node[]; else?: Node[] }
   | { t: 'backdrop'; bg: Backdrop }
   | { t: 'card'; title: string; subtitle?: string }
   /** Brings a character on screen. A visit containing one starts with an empty counter. */

@@ -49,6 +49,11 @@ export async function runScene(nodes: Node[], s: GameState, ui: SceneUI): Promis
       case 'if':
         await runScene(hasFlag(s, node.flag) ? node.then : node.else ?? [], s, ui);
         break;
+      case 'ifBond': {
+        const ok = node.who.every((w) => (s.bonds[w] ?? 0) >= node.min);
+        await runScene(ok ? node.then : node.else ?? [], s, ui);
+        break;
+      }
       case 'backdrop':
         ui.backdrop(node.bg);
         break;

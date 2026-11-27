@@ -2,7 +2,7 @@
 
 Ege'de küçük bir kasaba, babaanneden kalan bir çay evi ve elli yıldır sönük duran bir fener. Hikâye odaklı, rahat oynanışlı bir mobil oyun.
 
-Şu an oynanabilir olanlar: Prolog (“Kepenk”), 1. bölüm (“İlk Müşteriler”), 2. bölüm (“Muhtarın Planı”) 3. bölüm (“Yıldız’ın Hikâyesi”) ve 4. bölüm (“Ebe”). Toplam yirmi dört oyun günü, yaklaşık 2,5–3 saatlik oynanış.
+İlk yazın hikâyesi tamamlandı: Prolog (“Kepenk”) ve beş bölüm, “İlk Müşteriler”, “Muhtarın Planı”, “Yıldız’ın Hikâyesi”, “Ebe” ve “Fırtına Gecesi”. Toplam yirmi sekiz oyun günü, yaklaşık 3–4 saatlik oynanış ve seçimlere ve bağlara göre açılan üç son: **Fener Yanıyor**, **Aile Sırrı** ve **Kepenk**.
 
 ## Neler var?
 
@@ -47,6 +47,7 @@ src/
     chapter2.ts     # 2. bölüm: Muhtarın Planı
     chapter3.ts     # 3. bölüm: Yıldız’ın Hikâyesi
     chapter4.ts     # 4. bölüm: Ebe
+    chapter5.ts     # 5. bölüm: Fırtına Gecesi ve üç son
     helpers.ts      # Senaryo yazarken kullanılan kısayollar (say, N, D, bond, flag…)
     characters.ts   # Karakter adları, rolleri, portreleri
     drinks.ts       # İçecekler, fiyatlar, demleme zorluğu, defter tarifleri ve anılar
@@ -78,10 +79,10 @@ Senaryo tamamen veri olarak yazılıdır; motoru değiştirmeden yeni günler ek
 }
 ```
 
-Kullanılabilen düğümler: `say`, `choice`, `bond`, `flag`, `if`, `money`, `recipe`, `item`, `backdrop`, `card`, `enter` (müşteriyi sahnenin ortasında içeri sokar). Yeni bir bölüm eklerken `CHAPTERS` listesine adını, `NEXT_UP` satırına da sıradaki bölümü yazın.
+Kullanılabilen düğümler: `say`, `choice`, `bond`, `flag`, `if`, `money`, `recipe`, `item`, `backdrop`, `card`, `enter` (müşteriyi sahnenin ortasında içeri sokar), `ifBond` (belirli karakterlerle bağ yeterince güçlüyse bir yol açar). Yeni bir bölüm eklerken `CHAPTERS` listesine adını, `NEXT_UP` satırına da sıradaki bölümü yazın.
 
 `npm test` her değişiklikte şunları kontrol eder: bilinmeyen karakter ya da içecek kullanılmamış mı, kontrol edilen her bayrak bir yerde açılıyor mu, bir müşteri tarifi henüz açılmamış bir içecek istiyor mu, satırlar telefona sığacak uzunlukta mı, ve oyun baştan sona iki farklı seçim yoluyla hatasız oynanabiliyor mu.
 
 ## Sonraki fazlar
 
-Hikâyenin tamamı (5 bölüm, 3 son) ve sonraki yazlar için senaryo taslağı ayrı bir belgede tutuluyor. Sıradaki: **Bölüm 5 — Fırtına Gecesi** (final ve üç son).
+Hikâyenin tamamı (5 bölüm, 3 son) ve sonraki yazlar için senaryo taslağı ayrı bir belgede tutuluyor. Sıradaki: **2. yaz — Yazlık Sinema.**

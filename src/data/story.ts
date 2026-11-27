@@ -3,6 +3,8 @@ import { D, N, bg, bond, flag, say, yusufDaily } from './helpers';
 import { CHAPTER_2 } from './chapter2';
 import { CHAPTER_3 } from './chapter3';
 import { CHAPTER_4 } from './chapter4';
+import { CHAPTER_5 } from './chapter5';
+export { ENDINGS } from './chapter5';
 
 // ---------------------------------------------------------------------------
 // PROLOG — "Kepenk"
@@ -478,12 +480,13 @@ export const CHAPTERS: Record<number, { label: string; title: string }> = {
   2: { label: 'Bölüm 2', title: 'Muhtarın Planı' },
   3: { label: 'Bölüm 3', title: 'Yıldız’ın Hikâyesi' },
   4: { label: 'Bölüm 4', title: 'Ebe' },
+  5: { label: 'Bölüm 5', title: 'Fırtına Gecesi' },
 };
 
 /** Shown on the end screen until the next chapter ships. */
-export const NEXT_UP = 'Bölüm 5, “Fırtına Gecesi”';
+export const NEXT_UP = '2. yaz, “Yazlık Sinema”';
 
-export const DAYS: Day[] = [day1, day2, day3, day4, day5, day6, ...CHAPTER_2, ...CHAPTER_3, ...CHAPTER_4];
+export const DAYS: Day[] = [day1, day2, day3, day4, day5, day6, ...CHAPTER_2, ...CHAPTER_3, ...CHAPTER_4, ...CHAPTER_5];
 
 export const LAST_DAY = DAYS[DAYS.length - 1].n;
 

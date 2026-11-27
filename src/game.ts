@@ -1,9 +1,9 @@
 import type { Day, GameState, Visit } from './types';
-import { CHAPTERS, DAYS, LAST_DAY, NEXT_UP, getDay } from './data/story';
+import { CHAPTERS, DAYS, ENDINGS, LAST_DAY, NEXT_UP, getDay } from './data/story';
 import { DRINKS } from './data/drinks';
 import { CHARACTERS } from './data/characters';
 import { runScene } from './engine/scene';
-import { hasFlag, save, setFlag } from './engine/state';
+import { hasFlag, recordEnding, save, seenEndings, setFlag } from './engine/state';
 import { Stage, type BrewResult } from './ui/stage';
 import { el } from './ui/dom';
 import { hearts } from './ui/overlays';
@@ -26,6 +26,7 @@ export async function play(state: GameState, mount: HTMLElement, onMenu: () => v
     if (!day) break;
     save(state);
     await playDay(day, state, stage);
+    for (const e of ENDINGS) if (hasFlag(state, e.flag)) recordEnding(e.flag);
     state.day += 1;
     save(state);
   }
@@ -50,6 +51,7 @@ async function playDay(day: Day, s: GameState, stage: Stage): Promise<void> {
   if (day.evening) await runScene(day.evening, s, stage);
   if (day.night) await runScene(day.night, s, stage);
 
+  stage.setActor(null);
   await stage.sheet(daySummary(day, s, start), day.n === LAST_DAY ? 'Devam' : 'Günü bitir');
 
   if (day.chapterEnd) {
@@ -106,12 +108,16 @@ function daySummary(day: Day, s: GameState, start: { money: number; bonds: GameS
 }
 
 async function showEnd(s: GameState, stage: Stage): Promise<void> {
-  stage.backdrop('gece');
-  stage.refreshHud('Devamı yakında');
+  const ending = ENDINGS.find((e) => hasFlag(s, e.flag));
+  const seen = seenEndings();
+  stage.backdrop(ending?.flag === 'son_kepenk' ? 'gece' : 'fener');
+  stage.refreshHud(ending ? 'Son' : 'Devamı yakında');
   const body = el('div', { class: 'chapter-end' },
-    el('span', { class: 'kicker' }, 'ŞİMDİLİK BU KADAR'),
-    el('h2', {}, 'Fener seni bekliyor'),
-    el('p', {}, `${CHAPTERS[DAYS[DAYS.length - 1].chapter].label} tamamlandı. ${NEXT_UP} yakında.`),
+    el('span', { class: 'kicker' }, ending ? 'HİKÂYE TAMAMLANDI' : 'ŞİMDİLİK BU KADAR'),
+    el('h2', {}, ending ? ending.title : 'Fener seni bekliyor'),
+    el('p', {}, ending
+      ? `Bulduğun sonlar: ${ENDINGS.filter((e) => seen.includes(e.flag)).length} / ${ENDINGS.length}. ${NEXT_UP} yakında.`
+      : `${CHAPTERS[DAYS[DAYS.length - 1].chapter].label} tamamlandı. ${NEXT_UP} yakında.`),
     el('div', { class: 'summary-row' }, el('span', {}, 'İkram edilen'), el('strong', {}, String(s.served))),
     el('div', { class: 'summary-row' }, el('span', {}, 'Kusursuz demleme'), el('strong', {}, String(s.perfect))),
     el('div', { class: 'summary-row' }, el('span', {}, 'Kasa'), el('strong', {}, `₺${s.money}`)),
