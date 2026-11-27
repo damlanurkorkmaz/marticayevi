@@ -1,0 +1,15 @@
+{
+  "name": "Martı Çay Evi",
+  "short_name": "Martı Çay Evi",
+  "description": "Ege'de bir çay evi ve elli yıllık bir sır.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F6EFE2",
+  "theme_color": "#F6EFE2",
+  "lang": "tr",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

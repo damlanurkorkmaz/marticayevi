@@ -24,6 +24,14 @@ npm test           # senaryo ve oyun kuralları testleri
 npm run build      # dist/ klasörüne üretim derlemesi
 ```
 
+## Web'de oyna
+
+Oyun her `main` push'unda otomatik olarak derlenir, test edilir ve GitHub Pages'te yayınlanır:
+
+**https://damlanurkorkmaz.github.io/marticayevi/**
+
+Telefonda bu adresi açıp tarayıcının "Ana ekrana ekle" seçeneğini kullanırsan oyun bir uygulama gibi tam ekran açılır.
+
 ## Telefona paketleme (Capacitor)
 
 Oyun web teknolojisiyle yazıldı ve [Capacitor](https://capacitorjs.com) ile iOS ve Android uygulamasına dönüşür. Native projeler henüz depoda yok; bir kez şu adımlarla eklenir:
