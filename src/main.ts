@@ -48,7 +48,7 @@ function showTitle(): void {
         : null,
       el('button', { class: `btn big${saved ? '' : ' primary'}`, onclick: confirmNew }, saved ? 'Yeni oyun' : 'Başla'),
     ),
-    el('p', { class: 'credit' }, 'Prolog ve ilk üç bölüm'),
+    el('p', { class: 'credit' }, 'Prolog ve ilk dört bölüm'),
   );
 
   app.replaceChildren(

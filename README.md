@@ -2,7 +2,7 @@
 
 Ege'de küçük bir kasaba, babaanneden kalan bir çay evi ve elli yıldır sönük duran bir fener. Hikâye odaklı, rahat oynanışlı bir mobil oyun.
 
-Şu an oynanabilir olanlar: Prolog (“Kepenk”), 1. bölüm (“İlk Müşteriler”), 2. bölüm (“Muhtarın Planı”) ve 3. bölüm (“Yıldız’ın Hikâyesi”). Toplam on sekiz oyun günü, yaklaşık 2 saatlik oynanış.
+Şu an oynanabilir olanlar: Prolog (“Kepenk”), 1. bölüm (“İlk Müşteriler”), 2. bölüm (“Muhtarın Planı”) 3. bölüm (“Yıldız’ın Hikâyesi”) ve 4. bölüm (“Ebe”). Toplam yirmi dört oyun günü, yaklaşık 2,5–3 saatlik oynanış.
 
 ## Neler var?
 
@@ -46,6 +46,7 @@ src/
     story.ts        # Prolog ve 1. bölüm; bölüm listesi ve gün sırası
     chapter2.ts     # 2. bölüm: Muhtarın Planı
     chapter3.ts     # 3. bölüm: Yıldız’ın Hikâyesi
+    chapter4.ts     # 4. bölüm: Ebe
     helpers.ts      # Senaryo yazarken kullanılan kısayollar (say, N, D, bond, flag…)
     characters.ts   # Karakter adları, rolleri, portreleri
     drinks.ts       # İçecekler, fiyatlar, demleme zorluğu, defter tarifleri ve anılar
@@ -83,4 +84,4 @@ Kullanılabilen düğümler: `say`, `choice`, `bond`, `flag`, `if`, `money`, `re
 
 ## Sonraki fazlar
 
-Hikâyenin tamamı (5 bölüm, 3 son) ve sonraki yazlar için senaryo taslağı ayrı bir belgede tutuluyor. Sıradaki: **Bölüm 4 — Ebe.**
+Hikâyenin tamamı (5 bölüm, 3 son) ve sonraki yazlar için senaryo taslağı ayrı bir belgede tutuluyor. Sıradaki: **Bölüm 5 — Fırtına Gecesi** (final ve üç son).

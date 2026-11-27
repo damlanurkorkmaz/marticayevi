@@ -6,9 +6,10 @@ export const DRINKS: Record<DrinkId, Drink> = {
   limonata: { id: 'limonata', name: 'Limonata', color: '#EBCB5E', price: 30, zone: [0.45, 0.62], speed: 0.7, verb: 'Karıştır' },
   kahve: { id: 'kahve', name: 'Türk kahvesi', color: '#4A3326', price: 35, zone: [0.72, 0.84], speed: 0.8, verb: 'Pişir' },
   ihlamur: { id: 'ihlamur', name: 'Ihlamur', color: '#C9A24A', price: 25, zone: [0.18, 0.32], speed: 0.75, verb: 'Demle' },
+  harman: { id: 'harman', name: 'Şükran’ın harmanı', color: '#7E8C55', price: 40, zone: [0.5, 0.6], speed: 0.85, verb: 'Demle' },
 };
 
-export const DRINK_ORDER: DrinkId[] = ['tavsan', 'adacayi', 'limonata', 'kahve', 'ihlamur'];
+export const DRINK_ORDER: DrinkId[] = ['tavsan', 'adacayi', 'limonata', 'kahve', 'ihlamur', 'harman'];
 
 export const RECIPES: Record<DrinkId, Recipe> = {
   tavsan: {
@@ -40,5 +41,11 @@ export const RECIPES: Record<DrinkId, Recipe> = {
     title: 'Ihlamur',
     steps: ['Çiçekli ıhlamur, iki tutam', 'Kaynamış suyu üstüne dök, kaynatma', 'Kapağını kapat, yedi dakika', 'Bir dilim limon, bardağın kenarına'],
     memory: 'Kemal anahtar yapar, ben çay. İkimiz de insanların kapısını açarız. Bir tek o kapıyı açamadık.',
+  },
+  harman: {
+    id: 'harman',
+    title: 'Şükran’ın harmanı',
+    steps: ['Adaçayı yaprağı, bir avuç', 'Kayalık kekiği, üç dal', 'Mürver çiçeği, bir tutam', 'Kaynar suyu bekletmeden dök. Dört dakika: fazlası acı, azı tatsız'],
+    memory: '(Bu sayfayı sen yazdın, Şükran Hala anlattı.) “Her bahar Nesrin’le tepeye çıkıp toplardık. O gece de bunu içtik. Sabaha karşı, bebek uyurken.”',
   },
 };
